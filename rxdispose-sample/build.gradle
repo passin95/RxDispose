@@ -1,0 +1,19 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        applicationId "me.passin.rxdispose.sample"
+        minSdkVersion rootProject.ext.minSdkVersion
+
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    implementation rootProject.ext.appCompat
+    implementation project(':rxdispose-android')
+}

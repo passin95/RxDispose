@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:text="开启轮训直到 onDestroy() 或者 ExceptionEvent"
+        android:onClick="trainingInRotationUntilExceptionEvent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:text="开启轮训直到 onStop() 或者 ClickEvent"
+        android:onClick="trainingInRotationUntilClickEvent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="triggerExceptionEvent"
+        android:text="点击触发 ExampleEvent" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="triggerClickEvent"
+        android:text="点击触发 ClickEvent" />
+
+</LinearLayout>

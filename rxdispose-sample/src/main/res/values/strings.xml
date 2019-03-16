@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">RxDispose</string>
+    <string name="message">Check logcat tag "RxDispose" to see this sample in action. You\'ll need to finish
+        the Activity (or recreate it) to see the automatic unsubscription in action.</string>
+</resources>
