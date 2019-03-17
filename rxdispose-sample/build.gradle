@@ -8,12 +8,13 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
 
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
     }
 }
 
 dependencies {
     implementation rootProject.ext.appCompat
     implementation project(':rxdispose-android')
+//    implementation rootProject.ext.rxDisposeAndroid
 }

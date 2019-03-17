@@ -7,8 +7,10 @@ buildscript {
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
-        
+        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -32,6 +34,9 @@ ext {
     compileSdkVersion = 28
     targetSdkVersion = compileSdkVersion
 
+    versionCode = 1
+    versionName = "0.0.1"
+
     supportLibVersion = '28.0.0'
     lifecycleVersion = '1.1.1'
     lifecycleRuntimeVersion = '1.1.1'
@@ -42,6 +47,9 @@ ext {
     // Define all dependencies in the base project, to unify & make it easy to update
     rxJava = 'io.reactivex.rxjava2:rxjava:2.2.7'
     rxAndroid = 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    rxDispose = "me.passin.rxdispose:$versionName"
+    rxDisposeAndroid = "me.passin.rxdispose-android:$versionName"
     supportAnnotations = "com.android.support:support-annotations:$supportLibVersion"
+    appCompat = "com.android.support:appcompat-v7:$supportLibVersion"
     appCompat = "com.android.support:appcompat-v7:$supportLibVersion"
 }

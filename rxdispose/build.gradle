@@ -13,3 +13,5 @@ dependencies {
     api rootProject.ext.rxJava
     api rootProject.ext.supportAnnotations
 }
+
+apply from: "$rootDir/gradle/gradle-mvn-push.gradle"
