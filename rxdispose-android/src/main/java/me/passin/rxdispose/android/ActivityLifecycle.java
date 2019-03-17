@@ -16,10 +16,7 @@ package me.passin.rxdispose.android;
 import me.passin.rxdispose.LifecycleProvider;
 
 /**
- * <pre>
- * @author : zbb 33775
- * @Date: 2019/3/14 16:10
- * </pre>
+ * Lifecycle events that can be emitted by Activity.
  */
 public interface ActivityLifecycle extends LifecycleProvider<String> {
 

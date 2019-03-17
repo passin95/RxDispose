@@ -25,12 +25,6 @@ import io.reactivex.functions.Function;
 import me.passin.rxdispose.LifecycleTransformer;
 import me.passin.rxdispose.OutsideLifecycleException;
 
-/**
- * <pre>
- * @author : zbb 33775
- * @Date: 2019/3/15 9:26
- * </pre>
- */
 public class RxDisposeAndroid {
 
     private RxDisposeAndroid() {

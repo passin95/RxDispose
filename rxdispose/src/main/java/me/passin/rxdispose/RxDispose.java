@@ -22,11 +22,10 @@ import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 
+
 /**
- * <pre>
- * @author : zbb 33775
- * @Date: 2019/3/14 16:53
- * </pre>
+ * 保留了原来 Rxlifecycle 的使用方式，
+ * 想要支持多种“类型”的 Event，泛型 R 需使用同一种类型。
  */
 public class RxDispose {
 
