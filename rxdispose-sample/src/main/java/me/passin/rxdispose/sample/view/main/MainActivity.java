@@ -10,10 +10,8 @@ import me.passin.rxdispose.sample.view.error.ErrorSampleActivity;
 import me.passin.rxdispose.sample.view.sample.SampleActivity;
 
 /**
- * <pre>
  * @author : passin
- * @Date: 2019/3/15 16:43
- * </pre>
+ * @date: 2019/3/15 16:43
  */
 public class MainActivity extends AppCompatActivity {
 

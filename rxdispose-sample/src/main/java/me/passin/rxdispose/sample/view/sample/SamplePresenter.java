@@ -25,10 +25,8 @@ import me.passin.rxdispose.android.ActivityLifecycle;
 import me.passin.rxdispose.sample.utils.RxDisposeUtils;
 
 /**
- * <pre>
  * @author : passin
- * @Date: 2019/3/15 13:42
- * </pre>
+ * @date: 2019/3/15 13:42
  */
 public class SamplePresenter  {
 

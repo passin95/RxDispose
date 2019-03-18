@@ -23,10 +23,8 @@ import me.passin.rxdispose.LifecycleProvider;
 import me.passin.rxdispose.android.ActivityLifecycle;
 
 /**
- * <pre>
  * @author : passin
- * @Date: 2019/3/15 16:23
- * </pre>
+ * @date: 2019/3/15 16:23
  */
 public class ActivityLifecycleForRxDispose implements Application.ActivityLifecycleCallbacks {
 

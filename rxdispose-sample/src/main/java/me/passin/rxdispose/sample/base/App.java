@@ -19,10 +19,8 @@ import me.passin.rxdispose.sample.way.ActivityLifecycleForRxDispose;
 import me.passin.rxdispose.sample.way.FragmentLifecycleForRxDispose;
 
 /**
- * <pre>
  * @author : passin
- * @Date: 2019/3/15 16:35
- * </pre>
+ * @date: 2019/3/15 16:35
  */
 public class App extends Application {
 
@@ -30,6 +28,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
+
+        // 另一种使用方式
         registerActivityLifecycleCallbacks(new ActivityLifecycleForRxDispose
                 (new FragmentLifecycleForRxDispose()));
     }

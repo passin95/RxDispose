@@ -30,10 +30,8 @@ import me.passin.rxdispose.sample.way.RxActivity;
 import me.passin.rxdispose.sample.utils.RxDisposeUtils;
 
 /**
- * <pre>
  * @author : passin
- * @Date: 2019/3/15 10:49
- * </pre>
+ * @date: 2019/3/15 10:49
  */
 public class SampleActivity extends RxActivity implements IView {
 

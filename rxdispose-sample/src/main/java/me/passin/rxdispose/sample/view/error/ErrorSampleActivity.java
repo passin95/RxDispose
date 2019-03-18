@@ -29,11 +29,9 @@ import me.passin.rxdispose.sample.utils.RxDisposeUtils;
 import me.passin.rxdispose.sample.way.RxActivity;
 
 /**
- * <pre>
  * @author : passin
- * @Date: 2019/3/15 10:49
- * </pre>
- * ------------------------------
+ * @date: 2019/3/15 10:49
+ * @desc:
  * 主要展示一些错误的使用方式。
  * 正确使用的关键点在于：PublishSubject 不会发送订阅前的所接收到的数据（Event）。
  */

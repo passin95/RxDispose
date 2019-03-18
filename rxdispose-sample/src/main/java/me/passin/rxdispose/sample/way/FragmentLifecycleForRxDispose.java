@@ -23,10 +23,8 @@ import me.passin.rxdispose.LifecycleProvider;
 import me.passin.rxdispose.android.FragmentLifecycle;
 
 /**
- * <pre>
  * @author : passin
- * @Date: 2019/3/15 16:26
- * </pre>
+ * @date: 2019/3/15 16:26
  */
 public class FragmentLifecycleForRxDispose extends FragmentManager.FragmentLifecycleCallbacks {
 

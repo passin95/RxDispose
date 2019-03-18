@@ -16,12 +16,9 @@ import me.passin.rxdispose.sample.utils.RxDisposeUtils;
 import me.passin.rxdispose.sample.way.RxActivity;
 
 /**
- * <pre>
- * @author : passin
- * @Date: 2019/3/15 16:43
- * </pre>
- * ----------------------------------
- * 支持自定义 Event 去取消订阅。
+ * @author: passin
+ * @date: 2019/3/15 16:43
+ * @desc: 支持自定义 Event 去取消订阅。
  */
 public class CustomEventActivity extends RxActivity {
 

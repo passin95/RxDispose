@@ -25,10 +25,8 @@ import me.passin.rxdispose.android.RxDisposeAndroid;
 import me.passin.rxdispose.sample.view.sample.IView;
 
 /**
- * <pre>
  * @author : passin
- * @Date: 2019/3/15 10:27
- * </pre>
+ * @date: 2019/3/15 10:27
  */
 public class RxDisposeUtils {
 
