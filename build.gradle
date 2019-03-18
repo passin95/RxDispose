@@ -34,7 +34,7 @@ ext {
     compileSdkVersion = 28
     targetSdkVersion = compileSdkVersion
 
-    versionCode = 1
+    versionCode = 2
     versionName = "0.0.2"
 
     supportLibVersion = '28.0.0'
@@ -44,12 +44,10 @@ ext {
     sourceCompatibilityVersion = JavaVersion.VERSION_1_7
     targetCompatibilityVersion = JavaVersion.VERSION_1_7
 
-    // Define all dependencies in the base project, to unify & make it easy to update
     rxJava = 'io.reactivex.rxjava2:rxjava:2.2.7'
     rxAndroid = 'io.reactivex.rxjava2:rxandroid:2.1.1'
     rxDispose = "me.passin.rxdispose:$versionName"
     rxDisposeAndroid = "me.passin.rxdispose-android:$versionName"
     supportAnnotations = "com.android.support:support-annotations:$supportLibVersion"
-    appCompat = "com.android.support:appcompat-v7:$supportLibVersion"
     appCompat = "com.android.support:appcompat-v7:$supportLibVersion"
 }
