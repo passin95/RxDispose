@@ -17,9 +17,14 @@ myObservable
 
 ```java
 myObservable
-    .compose(RxDisposeUtils.bindUntilEvent(lifecycle, ActivityEvent.DESTROY，EXAMPLE_EVENT))
+    .compose(RxDisposeUtils.bindUntilEvent(lifecycle, ActivityEvent.DESTROY, EXAMPLE_EVENT))
     .subscribe();
 ```
+
+根据不同的需求，可以实现 `LifecycleProvider` 去提供不同的 Subject，但一般情况下建议使用 `PublishSubject`，
+不同 Subject 的区别请自行查阅。
+
+绝大多数情况下，建议把 `compose(RxDisposeUtils.bindUntilEvent(lifecycle, ActivityEvent.DESTROY, EXAMPLE_EVENT))` 放置在 `subscribe()` 前一行，避免出现异步，导致取消订阅不及时。
 
 ## Unsubscription
 
