@@ -9,16 +9,21 @@
 
 ```java
 myObservable
-    .compose(RxDisposeUtils.bindToLifecycle(lifecycle)
+    .compose(RxDisposeUtils.bindToLifecycle(lifecycleProvider)
     .subscribe();
 ```
 
-或者想绑定至某个特定的 Event，支持多种“类型”的 Event。
-
+或者想绑定至某个特定的 Event，所有 Event 的生效区间为 lifecycle 对象的生命周期。
+支持多种“类型”的 Event 以及自定义 Event。
 ```java
 myObservable
-    .compose(RxDisposeUtils.bindUntilEvent(lifecycle, ActivityEvent.DESTROY, EXAMPLE_EVENT))
+    .compose(RxDisposeUtils.bindUntilEvent(lifecycleProvider, ActivityEvent.DESTROY, EXAMPLE_EVENT))
     .subscribe();
+```
+
+自定义 Event 的触发方式：
+```java
+lifecycleProvider.provideLifecycleSubject().onNext(EXAMPLE_EVENT);
 ```
 
 根据不同的需求，可以实现 `LifecycleProvider` 去提供不同的 Subject，但一般情况下建议使用 `PublishSubject`，
