@@ -14,12 +14,14 @@
 
 package me.passin.rxdispose.android;
 
-import me.passin.rxdispose.LifecycleProvider;
+import me.passin.rxdispose.Lifecycleable;
 
 /**
  * Lifecycle events that can be emitted by Fragments.
  */
-public interface FragmentLifecycle extends LifecycleProvider<String> {
+public interface FragmentLifecycle extends Lifecycleable {
+
+    ICostomEventProvider provideEventProvider();
 
     String GROUP = FragmentLifecycle.class.getCanonicalName();
 

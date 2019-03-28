@@ -13,12 +13,14 @@
  */
 package me.passin.rxdispose.android;
 
-import me.passin.rxdispose.LifecycleProvider;
+import me.passin.rxdispose.Lifecycleable;
 
 /**
  * Lifecycle events that can be emitted by Activity.
  */
-public interface ActivityLifecycle extends LifecycleProvider<String> {
+public interface ActivityLifecycle extends Lifecycleable {
+
+    ICostomEventProvider provideEventProvider();
 
     String GROUP = ActivityLifecycle.class.getCanonicalName();
 
