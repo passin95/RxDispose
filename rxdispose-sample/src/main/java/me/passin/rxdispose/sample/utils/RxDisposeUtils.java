@@ -16,7 +16,7 @@ package me.passin.rxdispose.sample.utils;
 import static me.passin.rxdispose.utils.Preconditions.checkNotNull;
 
 import io.reactivex.annotations.NonNull;
-import me.passin.rxdispose.LifecycleProvider;
+import me.passin.rxdispose.Lifecycleable;
 import me.passin.rxdispose.LifecycleTransformer;
 import me.passin.rxdispose.RxDispose;
 import me.passin.rxdispose.android.ActivityLifecycle;
@@ -30,41 +30,45 @@ import me.passin.rxdispose.sample.view.sample.IView;
  */
 public class RxDisposeUtils {
 
+    @SuppressWarnings("unchecked")
     public static <T> LifecycleTransformer<T> bindUntilEvent(@NonNull final IView view,
             @NonNull final String... event) {
         checkNotNull(view, "view == null");
-        if (view instanceof LifecycleProvider) {
-            return bindUntilEvent((LifecycleProvider) view, event);
+        if (view instanceof Lifecycleable) {
+            return bindUntilEvent((Lifecycleable) view, event);
         } else {
             throw new IllegalArgumentException("view isn't LifecycleProvider");
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> LifecycleTransformer<T> bindUntilEvent(
-            @NonNull final LifecycleProvider<String> lifecycleProvider, @NonNull final String... event) {
+            @NonNull final Lifecycleable<String> lifecycleProvider, @NonNull final String... event) {
         checkNotNull(lifecycleProvider, "lifecycleable == null");
         checkNotNull(event, "event == null");
-        return RxDispose.bindUntilEvent(lifecycleProvider.provideLifecycleSubject(), event);
+        return RxDispose.bindUntilEvent(lifecycleProvider.provideEventProvider().getObservable(), event);
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull IView view) {
         checkNotNull(view, "view == null");
-        if (view instanceof LifecycleProvider) {
-            return bindToLifecycle((LifecycleProvider) view);
+        if (view instanceof Lifecycleable) {
+            return bindToLifecycle((Lifecycleable) view);
         } else {
             throw new IllegalArgumentException("view isn't LifecycleProvider");
         }
     }
 
-    public static <T> LifecycleTransformer<T> bindToLifecycle(
-            @NonNull LifecycleProvider<String> lifecycleProvider) {
+    @SuppressWarnings("unchecked")
+    public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull Lifecycleable<String> lifecycleProvider) {
         checkNotNull(lifecycleProvider, "lifecycleProvider == null");
         if (lifecycleProvider instanceof ActivityLifecycle) {
-            return RxDisposeAndroid.bindActivity(lifecycleProvider.provideLifecycleSubject());
+            return RxDisposeAndroid.bindActivity(lifecycleProvider.provideEventProvider().getObservable());
         } else if (lifecycleProvider instanceof FragmentLifecycle) {
-            return RxDisposeAndroid.bindFragment(lifecycleProvider.provideLifecycleSubject());
+            return RxDisposeAndroid.bindFragment(lifecycleProvider.provideEventProvider().getObservable());
         } else {
             throw new IllegalArgumentException("lifecycleProvider not match");
         }
     }
+
 }

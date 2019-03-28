@@ -16,5 +16,4 @@ android {
 dependencies {
     implementation rootProject.ext.appCompat
     implementation project(':rxdispose-android')
-//    implementation rootProject.ext.rxDisposeAndroid
 }

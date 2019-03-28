@@ -55,7 +55,7 @@ public class CustomEventActivity extends RxActivity {
                     public void accept(Long num) throws Exception {
                         Log.i(TAG,
                                 "trainingInRotationUntilExceptionEvent Started , running until onDestroy() or "
-                                        + "ExceptionEvent: " + num);
+                                        + "EXCEPTION_EVENT: " + num);
                     }
                 });
     }
@@ -77,7 +77,7 @@ public class CustomEventActivity extends RxActivity {
                     public void accept(Long num) throws Exception {
                         Log.i(TAG,
                                 "trainingInRotationUntilClickEvent Started , running until onStop() or "
-                                        + "ClickEvent: " + num);
+                                        + "CLICK_EVENT: " + num);
                     }
                 });
     }
@@ -86,12 +86,12 @@ public class CustomEventActivity extends RxActivity {
         try {
             throw new Exception("this is a excepation");
         } catch (Exception e) {
-            provideLifecycleSubject().onNext(EXAMPLE_EVENT);
+            provideEventProvider().sendCostomEvent(EXAMPLE_EVENT);
         }
     }
 
 
     public void triggerClickEvent(View view) {
-        provideLifecycleSubject().onNext(CLICK_EVENT);
+        provideEventProvider().sendCostomEvent(CLICK_EVENT);
     }
 }

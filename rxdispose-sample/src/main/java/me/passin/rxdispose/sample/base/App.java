@@ -33,4 +33,5 @@ public class App extends Application {
         registerActivityLifecycleCallbacks(new ActivityLifecycleForRxDispose
                 (new FragmentLifecycleForRxDispose()));
     }
+
 }

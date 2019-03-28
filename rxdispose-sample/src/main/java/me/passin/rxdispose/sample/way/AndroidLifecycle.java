@@ -21,20 +21,21 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subjects.Subject;
-import me.passin.rxdispose.LifecycleProvider;
+import me.passin.rxdispose.EventProvider;
 import me.passin.rxdispose.OutsideLifecycleException;
+import me.passin.rxdispose.Lifecycleable;
 import me.passin.rxdispose.android.ActivityLifecycle;
+import me.passin.rxdispose.android.CostomEventProvider;
 import me.passin.rxdispose.android.FragmentLifecycle;
+import me.passin.rxdispose.android.ICostomEventProvider;
 
-public final class AndroidLifecycle implements LifecycleProvider<String>, LifecycleObserver {
+public final class AndroidLifecycle implements Lifecycleable<String>, LifecycleObserver {
 
-    public static LifecycleProvider<String> createLifecycleProvider(LifecycleOwner owner) {
+    public static Lifecycleable<String> createLifecycleProvider(LifecycleOwner owner) {
         return new AndroidLifecycle(owner);
     }
 
-    private final PublishSubject<String> lifecycleSubject = PublishSubject.create();
+    private final ICostomEventProvider mEventProvider = CostomEventProvider.create();
 
     private AndroidLifecycle(LifecycleOwner owner) {
         owner.getLifecycle().addObserver(this);
@@ -45,37 +46,37 @@ public final class AndroidLifecycle implements LifecycleProvider<String>, Lifecy
         switch (event) {
             case ON_CREATE:
                 if (owner instanceof Activity) {
-                    lifecycleSubject.onNext(ActivityLifecycle.DESTROY);
+                    provideEventProvider().sendLifecycleEvent(ActivityLifecycle.DESTROY);
                 } else if (owner instanceof Fragment) {
-                    lifecycleSubject.onNext(FragmentLifecycle.DESTROY_VIEW);
+                    provideEventProvider().sendLifecycleEvent(FragmentLifecycle.DESTROY_VIEW);
                 }
                 break;
             case ON_START:
                 if (owner instanceof Activity) {
-                    lifecycleSubject.onNext(ActivityLifecycle.STOP);
+                    provideEventProvider().sendLifecycleEvent(ActivityLifecycle.STOP);
                 } else if (owner instanceof Fragment) {
-                    lifecycleSubject.onNext(FragmentLifecycle.STOP);
+                    provideEventProvider().sendLifecycleEvent(FragmentLifecycle.STOP);
                 }
                 break;
             case ON_RESUME:
                 if (owner instanceof Activity) {
-                    lifecycleSubject.onNext(ActivityLifecycle.PAUSE);
+                    provideEventProvider().sendLifecycleEvent(ActivityLifecycle.PAUSE);
                 } else if (owner instanceof Fragment) {
-                    lifecycleSubject.onNext(FragmentLifecycle.PAUSE);
+                    provideEventProvider().sendLifecycleEvent(FragmentLifecycle.PAUSE);
                 }
                 break;
             case ON_PAUSE:
                 if (owner instanceof Activity) {
-                    lifecycleSubject.onNext(ActivityLifecycle.STOP);
+                    provideEventProvider().sendLifecycleEvent(ActivityLifecycle.STOP);
                 } else if (owner instanceof Fragment) {
-                    lifecycleSubject.onNext(FragmentLifecycle.STOP);
+                    provideEventProvider().sendLifecycleEvent(FragmentLifecycle.STOP);
                 }
                 break;
             case ON_STOP:
                 if (owner instanceof Activity) {
-                    lifecycleSubject.onNext(ActivityLifecycle.DESTROY);
+                    provideEventProvider().sendLifecycleEvent(ActivityLifecycle.DESTROY);
                 } else if (owner instanceof Fragment) {
-                    lifecycleSubject.onNext(FragmentLifecycle.DESTROY_VIEW);
+                    provideEventProvider().sendLifecycleEvent(FragmentLifecycle.DESTROY_VIEW);
                 }
                 break;
             case ON_DESTROY:
@@ -91,7 +92,7 @@ public final class AndroidLifecycle implements LifecycleProvider<String>, Lifecy
 
     @NonNull
     @Override
-    public Subject<String> provideLifecycleSubject() {
-        return lifecycleSubject;
+    public EventProvider<String> provideEventProvider() {
+        return mEventProvider;
     }
 }

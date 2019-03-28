@@ -18,10 +18,4 @@
         android:text="自定义事件实例"
         />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="jumpToErrorSampleActivity"
-        android:text="错误使用实例"
-        />
 </LinearLayout>

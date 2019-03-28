@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import me.passin.rxdispose.sample.R;
 import me.passin.rxdispose.sample.view.custom.CustomEventActivity;
-import me.passin.rxdispose.sample.view.error.ErrorSampleActivity;
 import me.passin.rxdispose.sample.view.sample.SampleActivity;
 
 /**
@@ -29,7 +28,4 @@ public class MainActivity extends AppCompatActivity {
         CustomEventActivity.startActivity(this);
     }
 
-    public void jumpToErrorSampleActivity(View view) {
-        ErrorSampleActivity.startActivity(this);
-    }
 }

@@ -16,62 +16,61 @@ package me.passin.rxdispose.sample.way;
 
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subjects.Subject;
 import me.passin.rxdispose.android.ActivityLifecycle;
+import me.passin.rxdispose.android.CostomEventProvider;
+import me.passin.rxdispose.android.ICostomEventProvider;
 
 public class RxActivity extends AppCompatActivity implements ActivityLifecycle {
 
-    private final PublishSubject<String> lifecycleSubject = PublishSubject.create();
+    private final ICostomEventProvider mCostomEventProvide = CostomEventProvider.create();
 
-    @NonNull
     @Override
-    public Subject<String> provideLifecycleSubject() {
-        return lifecycleSubject;
+    public ICostomEventProvider provideEventProvider() {
+        return mCostomEventProvide;
     }
 
     @Override
     @CallSuper
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        lifecycleSubject.onNext(ActivityLifecycle.CREATE);
+        mCostomEventProvide.sendLifecycleEvent(ActivityLifecycle.CREATE);
     }
 
     @Override
     @CallSuper
     protected void onStart() {
         super.onStart();
-        lifecycleSubject.onNext(ActivityLifecycle.START);
+        mCostomEventProvide.sendLifecycleEvent(ActivityLifecycle.START);
     }
 
     @Override
     @CallSuper
     protected void onResume() {
         super.onResume();
-        lifecycleSubject.onNext(ActivityLifecycle.RESUME);
+        mCostomEventProvide.sendLifecycleEvent(ActivityLifecycle.RESUME);
     }
 
     @Override
     @CallSuper
     protected void onPause() {
-        lifecycleSubject.onNext(ActivityLifecycle.PAUSE);
+        mCostomEventProvide.sendLifecycleEvent(ActivityLifecycle.PAUSE);
         super.onPause();
     }
 
     @Override
     @CallSuper
     protected void onStop() {
-        lifecycleSubject.onNext(ActivityLifecycle.STOP);
+        mCostomEventProvide.sendLifecycleEvent(ActivityLifecycle.STOP);
         super.onStop();
     }
 
     @Override
     @CallSuper
     protected void onDestroy() {
-        lifecycleSubject.onNext(ActivityLifecycle.DESTROY);
+        mCostomEventProvide.sendLifecycleEvent(ActivityLifecycle.DESTROY);
         super.onDestroy();
     }
+
 }
