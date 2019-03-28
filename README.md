@@ -9,7 +9,7 @@
 
 ```java
 myObservable
-    .compose(RxDisposeUtils.bindToLifecycle(lifecycleProvider)
+    .compose(RxDisposeUtils.bindToLifecycle(lifecycleable)
     .subscribe();
 ```
 
@@ -17,7 +17,7 @@ myObservable
 支持多种“类型”的 Event 以及自定义 Event。
 ```java
 myObservable
-    .compose(RxDisposeUtils.bindUntilEvent(lifecycleProvider, ActivityEvent.DESTROY, EXAMPLE_EVENT))
+    .compose(RxDisposeUtils.bindUntilEvent(lifecycleable, ActivityEvent.DESTROY, EXAMPLE_EVENT))
     .subscribe();
 ```
 
@@ -29,7 +29,7 @@ lifecycleProvider.provideLifecycleSubject().onNext(EXAMPLE_EVENT);
 根据不同的需求，可以实现 `LifecycleProvider` 去提供不同的 Subject，但一般情况下建议使用 `PublishSubject`，
 不同 Subject 的区别请自行查阅。
 
-绝大多数情况下，建议把 `compose(RxDisposeUtils.bindUntilEvent(lifecycle, ActivityEvent.DESTROY, EXAMPLE_EVENT))` 放置在 `subscribe()` 前一行，避免出现异步，导致取消订阅不及时。
+绝大多数情况下，建议把 `compose(RxDisposeUtils.bindUntilEvent(lifecycleable, ActivityEvent.DESTROY, EXAMPLE_EVENT))` 放置在 `subscribe()` 前一行，避免出现异步，导致取消订阅不及时。
 
 ## Unsubscription
 
@@ -43,10 +43,10 @@ RxDispose 实际上并没有取消订阅序列。 相反，它终止序列的方
 ## Installation
 
 ```gradle
-implementation 'me.passin.rxdispose:0.0.3'
+implementation 'com.passin.rxdispose:0.0.1'
 
 // 如果应用在 Android 上
-implementation 'me.passin.rxdispose-android:0.0.3'
+implementation 'com.passin.rxdispose-android:0.0.1'
 ```
 
 ## License
