@@ -23,7 +23,7 @@ myObservable
 
 自定义 Event 的触发方式：
 ```java
-lifecycleProvider.provideLifecycleSubject().onNext(EXAMPLE_EVENT);
+provideEventProvider().sendCostomEvent(EXAMPLE_EVENT);
 ```
 
 根据不同的需求，可以实现 `LifecycleProvider` 去提供不同的 Subject，但一般情况下建议使用 `PublishSubject`，
