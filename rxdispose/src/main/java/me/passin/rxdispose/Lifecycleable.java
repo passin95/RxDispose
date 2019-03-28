@@ -15,16 +15,10 @@
 package me.passin.rxdispose;
 
 import android.support.annotation.NonNull;
-import io.reactivex.subjects.Subject;
 
-/**
- * Common base interface for activity and fragment lifecycle providers.
- *
- * Useful if you are writing utilities on top of rxlifecycle-components
- * or implementing your own component not supported by this library.
- */
-public interface LifecycleProvider<E> {
+public interface Lifecycleable<E> {
 
     @NonNull
-    Subject<E> provideLifecycleSubject();
+    EventProvider<E> provideEventProvider();
+
 }
