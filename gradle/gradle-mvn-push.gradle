@@ -3,9 +3,6 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 Properties localProperties = new Properties()
 
-version = rootProject.ext.versionName
-group = "me.passin"
-
 try {
     def localFile = project.rootProject.file('local.properties')
     if (localFile != null && localFile.exists()) {
@@ -14,6 +11,12 @@ try {
 } catch (Exception ignored) {
     println("local.properties not found")
 }
+
+def gitUrl = 'https://github.com/passin95/RxDispose.git'   // Git仓库的url
+def siteUrl = 'https://github.com/passin95/RxDispose'
+
+version = rootProject.ext.versionName
+group = "com.passin"
 
 bintray {
     user = localProperties.getProperty("bintray.user")
@@ -24,8 +27,8 @@ bintray {
         repo = 'maven'
         name = POM_NAME
         licenses = ["Apache-2.0"]
-        websiteUrl = localProperties.getProperty("siteUrl")
-        vcsUrl = localProperties.getProperty("gitUrl")
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
         publish = true // 是否是公开项目。
 
         version {
@@ -41,31 +44,33 @@ bintray {
 install {
     repositories.mavenInstaller {
 
-        pom.project {
-            name POM_NAME
-            packaging POM_PACKAGING
-            description POM_DESCRIPTION
-            url siteUrl
-
-            licenses {
-                license {
-                    name 'The Apache Software License, Version 2.0'
-                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                }
-            }
-
-            developers {
-                developer {
-                    id 'passin95'        //填写bintray或者github的用户名
-                    name 'passin'         //姓名，可以是中文
-                    email 'zengbinbinpassin@foxmail.com'
-                }
-            }
-
-            scm {
-                connection gitUrl
-                developerConnection gitUrl
+        pom {
+            project {
+                name POM_NAME
+                packaging POM_PACKAGING
+                description POM_DESCRIPTION
                 url siteUrl
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'passin95'        //填写bintray或者github的用户名
+                        name 'passin'         //姓名，可以是中文
+                        email 'zengbinbinpassin@foxmail.com'
+                    }
+                }
+
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
             }
         }
     }
