@@ -43,10 +43,10 @@ public class RxDisposeUtils {
 
     @SuppressWarnings("unchecked")
     public static <T> LifecycleTransformer<T> bindUntilEvent(
-            @NonNull final Lifecycleable<String> lifecycleProvider, @NonNull final String... event) {
-        checkNotNull(lifecycleProvider, "lifecycleable == null");
+            @NonNull final Lifecycleable<String> lifecycleable, @NonNull final String... event) {
+        checkNotNull(lifecycleable, "lifecycleable == null");
         checkNotNull(event, "event == null");
-        return RxDispose.bindUntilEvent(lifecycleProvider.provideEventProvider().getObservable(), event);
+        return RxDispose.bindUntilEvent(lifecycleable.provideEventProvider().getObservable(), event);
     }
 
     @SuppressWarnings("unchecked")
