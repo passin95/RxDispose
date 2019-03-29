@@ -23,7 +23,7 @@ import io.reactivex.android.MainThreadDisposable;
 
 final class ViewDetachesOnSubscribe implements ObservableOnSubscribe<Object> {
 
-    static final String VIEW_DETACHE = ViewDetachesOnSubscribe.class.getCanonicalName() + "VIEW_DETACHE";
+    static final Object SIGNAL = new Object();
 
     final View view;
 
@@ -54,7 +54,7 @@ final class ViewDetachesOnSubscribe implements ObservableOnSubscribe<Object> {
 
         @Override
         public void onViewDetachedFromWindow(View view) {
-            emitter.onNext(VIEW_DETACHE);
+            emitter.onNext(SIGNAL);
         }
 
         @Override

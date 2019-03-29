@@ -13,6 +13,7 @@
  */
 package me.passin.rxdispose.android;
 
+import android.support.annotation.NonNull;
 import me.passin.rxdispose.Lifecycleable;
 
 /**
@@ -20,6 +21,7 @@ import me.passin.rxdispose.Lifecycleable;
  */
 public interface ActivityLifecycle extends Lifecycleable {
 
+    @NonNull
     ICostomEventProvider provideEventProvider();
 
     String GROUP = ActivityLifecycle.class.getCanonicalName();

@@ -14,6 +14,7 @@
 
 package me.passin.rxdispose.android;
 
+import android.support.annotation.NonNull;
 import me.passin.rxdispose.Lifecycleable;
 
 /**
@@ -21,6 +22,7 @@ import me.passin.rxdispose.Lifecycleable;
  */
 public interface FragmentLifecycle extends Lifecycleable {
 
+    @NonNull
     ICostomEventProvider provideEventProvider();
 
     String GROUP = FragmentLifecycle.class.getCanonicalName();
