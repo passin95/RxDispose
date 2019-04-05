@@ -43,10 +43,10 @@ RxDispose 实际上并没有取消订阅序列。 相反，它终止序列的方
 ## Installation
 
 ```gradle
-implementation 'com.passin.rxdispose:0.0.1'
+implementation 'com.passin.rxdispose:0.1.0'
 
 // 如果应用在 Android 上
-implementation 'com.passin.rxdispose-android:0.0.1'
+implementation 'com.passin.rxdispose-android:0.1.0'
 ```
 
 ## License
