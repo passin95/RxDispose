@@ -15,8 +15,7 @@
 package me.passin.rxdispose.sample.base;
 
 import android.app.Application;
-import me.passin.rxdispose.sample.way.ActivityLifecycleForRxDispose;
-import me.passin.rxdispose.sample.way.FragmentLifecycleForRxDispose;
+import android.os.StrictMode;
 
 /**
  * @author : passin
@@ -28,10 +27,10 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-
+        StrictMode.enableDefaults();
         // 另一种使用方式
-        registerActivityLifecycleCallbacks(new ActivityLifecycleForRxDispose
-                (new FragmentLifecycleForRxDispose()));
+//        registerActivityLifecycleCallbacks(new ActivityLifecycleForRxDispose
+//                (new FragmentLifecycleForRxDispose()));
     }
 
 }
