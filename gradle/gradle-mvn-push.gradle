@@ -16,7 +16,7 @@ def gitUrl = 'https://github.com/passin95/RxDispose.git'   // Git仓库的url
 def siteUrl = 'https://github.com/passin95/RxDispose'
 
 version = rootProject.ext.versionName
-group = "com.passin"
+group = "me.passin"
 
 bintray {
     user = localProperties.getProperty("bintray.user")
