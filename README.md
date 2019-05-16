@@ -32,12 +32,13 @@ provideEventProvider().sendCostomEvent(EXAMPLE_EVENT);
 
 ## 说明
 
-RxDispose 实际上并没有取消订阅序列。 相反，它终止序列的方式为：
+RxDispose 实际上并没有取消真正订阅序列。相反，使用该方式取消订阅时，会再走其它方法：
 
-- `Observable`, `Flowable` and `Maybe` - emits `onCompleted()`
-- `Single` and `Completable` - emits `onError(CancellationException)`
+- `Observable`, `Flowable` and `Maybe` - 会执行 `onCompleted()`
+- `Single` and `Completable` - 会执行 `onError(CancellationException)`
 
 如果想真正取消订阅 `Subscription.unsubscribe()`，那么建议您手动调用 `unsubscribe()` 处理。
+在日常使用的过程中则需要针对性的进行处理。
 
 ## 安装
 
