@@ -32,6 +32,9 @@ import io.reactivex.ObservableTransformer;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.SingleTransformer;
+import io.reactivex.internal.operators.single.SingleToFlowable;
+import io.reactivex.plugins.RxJavaPlugins;
+import me.passin.rxdispose.utils.Preconditions;
 import org.reactivestreams.Publisher;
 
 /**
@@ -50,27 +53,32 @@ public final class LifecycleTransformer<T> implements ObservableTransformer<T, T
 
     @Override
     public ObservableSource<T> apply(Observable<T> upstream) {
-        return upstream.takeUntil(observable);
+        Preconditions.checkNotNull(upstream, "upstream is null");
+        return new RxDisposeObservable<>(upstream, observable);
     }
 
     @Override
     public Publisher<T> apply(Flowable<T> upstream) {
-        return upstream.takeUntil(observable.toFlowable(BackpressureStrategy.LATEST));
+        Preconditions.checkNotNull(upstream, "upstream is null");
+        return new RxDisposeFlowable<>(upstream, observable.toFlowable(BackpressureStrategy.LATEST));
     }
 
     @Override
     public SingleSource<T> apply(Single<T> upstream) {
-        return upstream.takeUntil(observable.firstOrError());
+        Preconditions.checkNotNull(upstream, "upstream is null");
+        return RxJavaPlugins.onAssembly(new RxDisposeSingle<>(upstream, new SingleToFlowable<>(observable.firstOrError())));
     }
 
     @Override
     public MaybeSource<T> apply(Maybe<T> upstream) {
-        return upstream.takeUntil(observable.firstElement());
+        Preconditions.checkNotNull(upstream, "upstream is null");
+        return new RxDisposeMaybe<>(upstream, observable.firstElement());
     }
 
     @Override
     public CompletableSource apply(Completable upstream) {
-        return Completable.ambArray(upstream, observable.flatMapCompletable(Functions.CANCEL_COMPLETABLE));
+        Preconditions.checkNotNull(upstream, "upstream is null");
+        return new RxDisposeCompletable(upstream, observable.flatMapCompletable(Functions.CANCEL_COMPLETABLE));
     }
 
     @Override

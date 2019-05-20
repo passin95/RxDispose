@@ -14,6 +14,7 @@
 
 package me.passin.rxdispose.sample.view.sample;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,10 +25,10 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import java.util.concurrent.TimeUnit;
 import me.passin.rxdispose.Lifecycleable;
-import me.passin.rxdispose.android.ActivityLifecycle;
+import me.passin.rxdispose.android.ActivityEvent;
 import me.passin.rxdispose.sample.R;
-import me.passin.rxdispose.sample.way.RxActivity;
 import me.passin.rxdispose.sample.utils.RxDisposeUtils;
+import me.passin.rxdispose.sample.way.RxActivity;
 
 /**
  * @author : passin
@@ -44,6 +45,7 @@ public class SampleActivity extends RxActivity implements IView {
     }
 
     @Override
+    @SuppressLint("CheckResult")
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
@@ -58,7 +60,7 @@ public class SampleActivity extends RxActivity implements IView {
                         Log.i(TAG, "SampleActivity Unsubscribing subscription from onCreate()");
                     }
                 })
-                .compose(RxDisposeUtils.<Long>bindToLifecycle((Lifecycleable<String>) this))
+                .compose(RxDisposeUtils.<Long>bindToLifecycle((Lifecycleable) this))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {
@@ -68,6 +70,7 @@ public class SampleActivity extends RxActivity implements IView {
     }
 
     @Override
+    @SuppressLint("CheckResult")
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart()");
@@ -82,7 +85,7 @@ public class SampleActivity extends RxActivity implements IView {
                     }
                 })
                 .compose(
-                        RxDisposeUtils.<Long>bindUntilEvent((Lifecycleable<String>) this, ActivityLifecycle.PAUSE))
+                        RxDisposeUtils.<Long>bindUntilEvent((Lifecycleable) this, ActivityEvent.PAUSE))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {
@@ -92,6 +95,7 @@ public class SampleActivity extends RxActivity implements IView {
     }
 
     @Override
+    @SuppressLint("CheckResult")
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
@@ -105,7 +109,7 @@ public class SampleActivity extends RxActivity implements IView {
                         Log.i(TAG, "SampleActivity Unsubscribing subscription from onResume()");
                     }
                 })
-                .compose(RxDisposeUtils.<Long>bindToLifecycle((Lifecycleable<String>) this))
+                .compose(RxDisposeUtils.<Long>bindToLifecycle((Lifecycleable) this))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {
@@ -115,6 +119,7 @@ public class SampleActivity extends RxActivity implements IView {
     }
 
     @Override
+    @SuppressLint("CheckResult")
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause()");
@@ -126,7 +131,7 @@ public class SampleActivity extends RxActivity implements IView {
                         Log.i(TAG, "SampleActivity Unsubscribing subscription from onPause()");
                     }
                 })
-                .compose(RxDisposeUtils.<Long>bindToLifecycle((Lifecycleable<String>) this))
+                .compose(RxDisposeUtils.<Long>bindToLifecycle((Lifecycleable) this))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {

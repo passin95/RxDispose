@@ -16,20 +16,9 @@ package me.passin.rxdispose.android;
 import android.support.annotation.NonNull;
 import me.passin.rxdispose.Lifecycleable;
 
-/**
- * Lifecycle events that can be emitted by Activity.
- */
-public interface ActivityLifecycle extends Lifecycleable {
+public interface ActivityLifecycleable extends Lifecycleable<Object> {
 
     @NonNull
     ICostomEventProvider provideEventProvider();
 
-    String GROUP = ActivityLifecycle.class.getCanonicalName();
-
-    String CREATE = GROUP + "CREATE";
-    String START = GROUP + "START";
-    String RESUME = GROUP + "RESUME";
-    String PAUSE = GROUP + "PAUSE";
-    String STOP = GROUP + "STOP";
-    String DESTROY = GROUP + "DESTROY";
 }

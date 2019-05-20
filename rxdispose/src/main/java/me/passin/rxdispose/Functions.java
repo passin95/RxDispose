@@ -29,7 +29,6 @@ final class Functions {
                 return true;
             }
 
-            //noinspection ThrowableResultOfMethodCallIgnored
             Exceptions.propagate(throwable);
             return false;
         }

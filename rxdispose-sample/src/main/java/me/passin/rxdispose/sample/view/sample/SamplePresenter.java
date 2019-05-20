@@ -16,12 +16,13 @@ package me.passin.rxdispose.sample.view.sample;
 
 import static me.passin.rxdispose.sample.view.sample.SampleActivity.TAG;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import io.reactivex.Observable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import java.util.concurrent.TimeUnit;
-import me.passin.rxdispose.android.ActivityLifecycle;
+import me.passin.rxdispose.android.ActivityEvent;
 import me.passin.rxdispose.sample.utils.RxDisposeUtils;
 
 /**
@@ -36,6 +37,7 @@ public class SamplePresenter  {
         mView = view;
     }
 
+    @SuppressLint("CheckResult")
     public void onStart() {
         Observable.interval(1, TimeUnit.SECONDS)
                 .doOnDispose(new Action() {
@@ -44,7 +46,7 @@ public class SamplePresenter  {
                         Log.i(TAG, "SamplePresenter Unsubscribing subscription from onStart()");
                     }
                 })
-                .compose(RxDisposeUtils.<Long>bindUntilEvent(mView, ActivityLifecycle.PAUSE))
+                .compose(RxDisposeUtils.<Long>bindUntilEvent(mView, ActivityEvent.PAUSE))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {
@@ -53,6 +55,7 @@ public class SamplePresenter  {
                 });
     }
 
+    @SuppressLint("CheckResult")
     public void onResume() {
         Observable.interval(1, TimeUnit.SECONDS)
                 .doOnDispose(new Action() {
@@ -61,7 +64,7 @@ public class SamplePresenter  {
                         Log.i(TAG, "SamplePresenter Unsubscribing subscription from onResume()");
                     }
                 })
-                .compose(RxDisposeUtils.<Long>bindUntilEvent(mView, ActivityLifecycle.DESTROY))
+                .compose(RxDisposeUtils.<Long>bindUntilEvent(mView, ActivityEvent.DESTROY))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {

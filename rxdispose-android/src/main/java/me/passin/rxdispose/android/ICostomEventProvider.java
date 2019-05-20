@@ -7,8 +7,8 @@ import me.passin.rxdispose.EventProvider;
  * @date: 2019/3/27 17:44
  * @desc:
  */
-public interface ICostomEventProvider extends EventProvider<String> {
+public interface ICostomEventProvider extends EventProvider<Object> {
 
-    void sendCostomEvent(String event);
+    void sendCostomEvent(Object event);
 
 }

@@ -18,11 +18,12 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import me.passin.rxdispose.android.ActivityLifecycle;
+import me.passin.rxdispose.android.ActivityEvent;
+import me.passin.rxdispose.android.ActivityLifecycleable;
 import me.passin.rxdispose.android.CostomEventProvider;
 import me.passin.rxdispose.android.ICostomEventProvider;
 
-public class RxActivity extends AppCompatActivity implements ActivityLifecycle {
+public class RxActivity extends AppCompatActivity implements ActivityLifecycleable {
 
     private final ICostomEventProvider mCostomEventProvide = CostomEventProvider.create();
 
@@ -35,41 +36,41 @@ public class RxActivity extends AppCompatActivity implements ActivityLifecycle {
     @CallSuper
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCostomEventProvide.sendLifecycleEvent(ActivityLifecycle.CREATE);
+        mCostomEventProvide.sendLifecycleEvent(ActivityEvent.CREATE);
     }
 
     @Override
     @CallSuper
     protected void onStart() {
         super.onStart();
-        mCostomEventProvide.sendLifecycleEvent(ActivityLifecycle.START);
+        mCostomEventProvide.sendLifecycleEvent(ActivityEvent.START);
     }
 
     @Override
     @CallSuper
     protected void onResume() {
         super.onResume();
-        mCostomEventProvide.sendLifecycleEvent(ActivityLifecycle.RESUME);
+        mCostomEventProvide.sendLifecycleEvent(ActivityEvent.RESUME);
     }
 
     @Override
     @CallSuper
     protected void onPause() {
-        mCostomEventProvide.sendLifecycleEvent(ActivityLifecycle.PAUSE);
+        mCostomEventProvide.sendLifecycleEvent(ActivityEvent.PAUSE);
         super.onPause();
     }
 
     @Override
     @CallSuper
     protected void onStop() {
-        mCostomEventProvide.sendLifecycleEvent(ActivityLifecycle.STOP);
+        mCostomEventProvide.sendLifecycleEvent(ActivityEvent.STOP);
         super.onStop();
     }
 
     @Override
     @CallSuper
     protected void onDestroy() {
-        mCostomEventProvide.sendLifecycleEvent(ActivityLifecycle.DESTROY);
+        mCostomEventProvide.sendLifecycleEvent(ActivityEvent.DESTROY);
         super.onDestroy();
     }
 

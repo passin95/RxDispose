@@ -18,9 +18,9 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import me.passin.rxdispose.EventProvider;
-import me.passin.rxdispose.Lifecycleable;
-import me.passin.rxdispose.android.ActivityLifecycle;
+import me.passin.rxdispose.android.ActivityEvent;
+import me.passin.rxdispose.android.ActivityLifecycleable;
+import me.passin.rxdispose.android.ICostomEventProvider;
 
 /**
  * @author : passin
@@ -40,8 +40,8 @@ public class ActivityLifecycleForRxDispose implements Application.ActivityLifecy
      */
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        if (activity instanceof ActivityLifecycle) {
-            obtainEventProvider(activity).sendLifecycleEvent(ActivityLifecycle.CREATE);
+        if (activity instanceof ActivityLifecycleable) {
+            obtainEventProvider(activity).sendLifecycleEvent(ActivityEvent.CREATE);
             if (activity instanceof FragmentActivity) {
                 ((FragmentActivity) activity).getSupportFragmentManager()
                         .registerFragmentLifecycleCallbacks(mFragmentLifecycle, true);
@@ -51,29 +51,29 @@ public class ActivityLifecycleForRxDispose implements Application.ActivityLifecy
 
     @Override
     public void onActivityStarted(Activity activity) {
-        if (activity instanceof ActivityLifecycle) {
-            obtainEventProvider(activity).sendLifecycleEvent(ActivityLifecycle.START);
+        if (activity instanceof ActivityLifecycleable) {
+            obtainEventProvider(activity).sendLifecycleEvent(ActivityEvent.START);
         }
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
-        if (activity instanceof ActivityLifecycle) {
-            obtainEventProvider(activity).sendLifecycleEvent(ActivityLifecycle.RESUME);
+        if (activity instanceof ActivityLifecycleable) {
+            obtainEventProvider(activity).sendLifecycleEvent(ActivityEvent.RESUME);
         }
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
-        if (activity instanceof ActivityLifecycle) {
-            obtainEventProvider(activity).sendLifecycleEvent(ActivityLifecycle.PAUSE);
+        if (activity instanceof ActivityLifecycleable) {
+            obtainEventProvider(activity).sendLifecycleEvent(ActivityEvent.PAUSE);
         }
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
-        if (activity instanceof ActivityLifecycle) {
-            obtainEventProvider(activity).sendLifecycleEvent(ActivityLifecycle.STOP);
+        if (activity instanceof ActivityLifecycleable) {
+            obtainEventProvider(activity).sendLifecycleEvent(ActivityEvent.STOP);
         }
     }
 
@@ -84,13 +84,13 @@ public class ActivityLifecycleForRxDispose implements Application.ActivityLifecy
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        if (activity instanceof ActivityLifecycle) {
-            obtainEventProvider(activity).sendLifecycleEvent(ActivityLifecycle.DESTROY);
+        if (activity instanceof ActivityLifecycleable) {
+            obtainEventProvider(activity).sendLifecycleEvent(ActivityEvent.DESTROY);
         }
     }
 
-    private EventProvider<String> obtainEventProvider(Activity activity) {
-        return ((Lifecycleable) activity).provideEventProvider();
+    private ICostomEventProvider obtainEventProvider(Activity activity) {
+        return ((ActivityLifecycleable) activity).provideEventProvider();
     }
 
 }

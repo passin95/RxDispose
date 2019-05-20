@@ -10,22 +10,24 @@ import io.reactivex.subjects.BehaviorSubject;
  */
 public class CostomEventProvider implements ICostomEventProvider {
 
-    private final BehaviorSubject<String> mEventSubject = BehaviorSubject.create();
+    private final BehaviorSubject<Object> mEventSubject = BehaviorSubject.create();
 
-    private String lastLifecycleEvent;
+    private Object lastLifecycleEvent;
 
     public static CostomEventProvider create() {
         return new CostomEventProvider();
     }
 
-    public synchronized void sendCostomEvent(String event) {
+    @Override
+    public synchronized void sendCostomEvent(Object event) {
         mEventSubject.onNext(event);
         if (lastLifecycleEvent != null) {
             mEventSubject.onNext(lastLifecycleEvent);
         }
     }
 
-    public synchronized void sendLifecycleEvent(String event) {
+    @Override
+    public synchronized void sendLifecycleEvent(Object event) {
         mEventSubject.onNext(event);
         lastLifecycleEvent = event;
     }

@@ -1,11 +1,13 @@
 # RxDispose
 
-该库基于 [RxLifecycle](https://github.com/trello/RxLifecycle) 改造得来，支持同时绑定和自定义多种生命周期事件。
-自定义事件的触发可以是一次点击、一个异常或者任何你想触发的地方。
+该库基于 [RxLifecycle](https://github.com/trello/RxLifecycle) 改造得来，在该库的基础上新增以下特性：
+1. 支持同时绑定和自定义多种生命周期事件，能够在任何时间和地点去控制取消订阅的时机。
+2. 能达到真正取消订阅的效果，不再是模拟取消订阅，不会在取消订阅的同时回调 onCompleted 或者 onError(CancellationException)。
+3. 面向接口编程，不需要继承任何基类，只需现实相应的接口，发送相应的生命周期事件即可。
 
 ## 使用方式
 
-更多使用方式请参考 rxlifecycle-sample（使用前请必看一下 Demo）。
+更多使用方式请参考 rxlifecycle-sample（使用前请必看一下 Demo，建议参考 Demo的使用方式使用）。
 
 ```java
 myObservable
@@ -28,25 +30,16 @@ myObservable
 provideEventProvider().sendCostomEvent(EXAMPLE_EVENT);
 ```
 
-绝大多数情况下，建议把 `compose(RxDisposeUtils.bindUntilEvent(lifecycleable, ActivityEvent.DESTROY, EXAMPLE_EVENT))` 放置在 `subscribe()` 前一行，避免出现异步，导致取消订阅不及时。
+绝大多数情况下，请把 `compose(RxDisposeUtils.bindUntilEvent(lifecycleable, ActivityEvent.DESTROY, EXAMPLE_EVENT))` 放置在 `subscribe()` 前一行，避免出现异步，导致取消订阅不及时。
 
-## 说明
-
-RxDispose 实际上并没有取消真正订阅序列。相反，使用该方式取消订阅时，会再走其它方法：
-
-- `Observable`, `Flowable` and `Maybe` - 会执行 `onCompleted()`
-- `Single` and `Completable` - 会执行 `onError(CancellationException)`
-
-如果想真正取消订阅 `Subscription.unsubscribe()`，那么建议您手动调用 `unsubscribe()` 处理。
-在日常使用的过程中则需要针对性的进行处理。
 
 ## 安装
 
 ```gradle
-implementation 'me.passin:rxdispose:0.1.0'
+implementation 'me.passin:rxdispose:0.2.0'
 
 // 如果应用在 Android 上
-implementation 'me.passin:rxdispose-android:0.1.0'
+implementation 'me.passin:rxdispose-android:0.2.0'
 ```
 
 ## License

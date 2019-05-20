@@ -1,5 +1,6 @@
 package me.passin.rxdispose.sample.view.custom;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,10 +8,11 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import java.util.concurrent.TimeUnit;
-import me.passin.rxdispose.android.ActivityLifecycle;
+import me.passin.rxdispose.android.ActivityEvent;
 import me.passin.rxdispose.sample.R;
 import me.passin.rxdispose.sample.utils.RxDisposeUtils;
 import me.passin.rxdispose.sample.way.RxActivity;
@@ -34,12 +36,33 @@ public class CustomEventActivity extends RxActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_event);
+
+        Single.timer(10, TimeUnit.SECONDS)
+                .doOnDispose(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        Log.i(TAG, "Unsubscribing trainingInRotationUntilExceptionEvent");
+                    }
+                })
+                .compose(RxDisposeUtils.<Long>bindToLifecycle(this))
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        Log.i(TAG, "Unsubscribing trainingInRotationUntilExceptionEvent");
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.i(TAG, "Unsubscribing trainingInRotationUntilExceptionEvent");
+                    }
+                });
     }
 
 
     /**
      * 开启轮训直到 onDestroy() 或者 ExceptionEvent
      */
+    @SuppressLint("CheckResult")
     public void trainingInRotationUntilExceptionEvent(View view) {
         Observable.interval(1, TimeUnit.SECONDS)
                 .doOnDispose(new Action() {
@@ -49,7 +72,7 @@ public class CustomEventActivity extends RxActivity {
                     }
                 })
                 .compose(
-                        RxDisposeUtils.<Long>bindUntilEvent(this, ActivityLifecycle.DESTROY, EXAMPLE_EVENT))
+                        RxDisposeUtils.<Long>bindUntilEvent(this, ActivityEvent.DESTROY, EXAMPLE_EVENT))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {
@@ -63,6 +86,7 @@ public class CustomEventActivity extends RxActivity {
     /**
      * 开启轮训直到 onStop() 或者 ClickEvent
      */
+    @SuppressLint("CheckResult")
     public void trainingInRotationUntilClickEvent(View view) {
         Observable.interval(1, TimeUnit.SECONDS)
                 .doOnDispose(new Action() {
@@ -71,7 +95,7 @@ public class CustomEventActivity extends RxActivity {
                         Log.i(TAG, "Unsubscribing trainingInRotationUntilClickEvent");
                     }
                 })
-                .compose(RxDisposeUtils.<Long>bindUntilEvent(this, ActivityLifecycle.PAUSE, CLICK_EVENT))
+                .compose(RxDisposeUtils.<Long>bindUntilEvent(this, ActivityEvent.PAUSE, CLICK_EVENT))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {

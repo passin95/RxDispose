@@ -17,24 +17,10 @@ package me.passin.rxdispose.android;
 import android.support.annotation.NonNull;
 import me.passin.rxdispose.Lifecycleable;
 
-/**
- * Lifecycle events that can be emitted by Fragments.
- */
-public interface FragmentLifecycle extends Lifecycleable {
+public interface FragmentLifecycleable extends Lifecycleable {
 
     @NonNull
     ICostomEventProvider provideEventProvider();
 
-    String GROUP = FragmentLifecycle.class.getCanonicalName();
-
-    String ATTACH = GROUP + "ATTACH";
-    String CREATE = GROUP + "CREATE";
-    String CREATE_VIEW = GROUP + "CREATE_VIEW";
-    String START = GROUP + "START";
-    String RESUME = GROUP + "RESUME";
-    String PAUSE = GROUP + "PAUSE";
-    String STOP = GROUP + "STOP";
-    String DESTROY_VIEW = GROUP + "DESTROY_VIEW";
-    String DESTROY = GROUP + "DESTROY";
-    String DETACH = GROUP + "DETACH";
 }
+

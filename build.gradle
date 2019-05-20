@@ -31,8 +31,8 @@ ext {
     compileSdkVersion = 28
     targetSdkVersion = compileSdkVersion
 
-    versionCode = 10
-    versionName = "0.1.0"
+    versionCode = 20
+    versionName = "0.2.0"
 
     supportLibVersion = '28.0.0'
     lifecycleVersion = '1.1.1'
