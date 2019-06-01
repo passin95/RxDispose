@@ -11,6 +11,8 @@ android {
 dependencies {
     api project(':rxdispose')
     implementation rootProject.ext.rxAndroid
+    testImplementation rootProject.ext.junit
+    testImplementation rootProject.ext.robolectric
 }
 
 apply from: "$rootDir/gradle/gradle-mvn-push.gradle"

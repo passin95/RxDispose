@@ -12,6 +12,7 @@ android {
 dependencies {
     api rootProject.ext.rxJava
     api rootProject.ext.supportAnnotations
+    testImplementation rootProject.ext.junit
 }
 
 apply from: "$rootDir/gradle/gradle-mvn-push.gradle"
