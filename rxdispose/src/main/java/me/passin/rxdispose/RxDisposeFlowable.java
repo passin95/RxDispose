@@ -2,6 +2,7 @@ package me.passin.rxdispose;
 
 import io.reactivex.Flowable;
 import io.reactivex.FlowableSubscriber;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.subscriptions.SubscriptionHelper;
 import io.reactivex.internal.util.AtomicThrowable;
 import io.reactivex.internal.util.HalfSerializer;
@@ -17,12 +18,13 @@ import org.reactivestreams.Subscription;
  * @date: 2019/5/19 23:04
  * @desc:
  */
+@SuppressWarnings("unchecked")
 public class RxDisposeFlowable<T, U> extends Flowable<T> {
 
     final Flowable<T> source;
     final Publisher<? extends U> other;
 
-    public RxDisposeFlowable(Flowable<T> source, Publisher<? extends U> other) {
+    RxDisposeFlowable(Flowable<T> source, Publisher<? extends U> other) {
         this.source = source;
         this.other = other;
     }
@@ -40,17 +42,17 @@ public class RxDisposeFlowable<T, U> extends Flowable<T> {
     static final class TakeUntilMainSubscriber<T> extends AtomicInteger implements FlowableSubscriber<T>, Subscription {
 
         final Subscriber<? super T> downstream;
-
         final AtomicLong requested;
-
         final AtomicReference<Subscription> upstream;
-
         final AtomicThrowable error;
-
         final TakeUntilMainSubscriber.OtherSubscriber other;
+        Disposable downstreamDispose;
 
         TakeUntilMainSubscriber(Subscriber<? super T> downstream) {
             this.downstream = downstream;
+            if (downstream instanceof Disposable) {
+                downstreamDispose = (Disposable) downstream;
+            }
             this.requested = new AtomicLong();
             this.upstream = new AtomicReference<>();
             this.other = new TakeUntilMainSubscriber.OtherSubscriber();
@@ -90,6 +92,19 @@ public class RxDisposeFlowable<T, U> extends Flowable<T> {
             SubscriptionHelper.cancel(other);
         }
 
+        void otherError(Throwable t) {
+            SubscriptionHelper.cancel(upstream);
+            HalfSerializer.onError(downstream, t, TakeUntilMainSubscriber.this, error);
+        }
+
+        void otherComplete() {
+            if (downstreamDispose != null) {
+                downstreamDispose.dispose();
+            } else {
+                cancel();
+            }
+        }
+
         final class OtherSubscriber extends AtomicReference<Subscription> implements FlowableSubscriber<Object> {
 
             @Override
@@ -99,21 +114,18 @@ public class RxDisposeFlowable<T, U> extends Flowable<T> {
 
             @Override
             public void onNext(Object t) {
-                SubscriptionHelper.cancel(this);
-                onComplete();
+                otherComplete();
             }
 
             @Override
             public void onError(Throwable t) {
-                SubscriptionHelper.cancel(upstream);
-                HalfSerializer.onError(downstream, t, TakeUntilMainSubscriber.this, error);
+                otherError(t);
             }
 
             @Override
             public void onComplete() {
-                SubscriptionHelper.cancel(upstream);
+                otherComplete();
             }
-
         }
     }
 }

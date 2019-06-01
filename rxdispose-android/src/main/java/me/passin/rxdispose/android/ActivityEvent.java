@@ -5,7 +5,7 @@ package me.passin.rxdispose.android;
  * @date: 2019/5/20 10:00
  * @desc:
  */
-public  enum ActivityEvent {
+public enum ActivityEvent {
 
     CREATE,
     START,

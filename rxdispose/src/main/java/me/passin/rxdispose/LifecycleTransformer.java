@@ -34,12 +34,8 @@ import io.reactivex.SingleSource;
 import io.reactivex.SingleTransformer;
 import io.reactivex.internal.operators.single.SingleToFlowable;
 import io.reactivex.plugins.RxJavaPlugins;
-import me.passin.rxdispose.utils.Preconditions;
 import org.reactivestreams.Publisher;
 
-/**
- * Transformer that continues a subscription until a second Observable emits an event.
- */
 public final class LifecycleTransformer<T> implements ObservableTransformer<T, T>,
         FlowableTransformer<T, T>, SingleTransformer<T, T>, MaybeTransformer<T, T>,
         CompletableTransformer {
@@ -53,32 +49,33 @@ public final class LifecycleTransformer<T> implements ObservableTransformer<T, T
 
     @Override
     public ObservableSource<T> apply(Observable<T> upstream) {
-        Preconditions.checkNotNull(upstream, "upstream is null");
+        checkNotNull(upstream, "upstream is null");
         return new RxDisposeObservable<>(upstream, observable);
     }
 
     @Override
     public Publisher<T> apply(Flowable<T> upstream) {
-        Preconditions.checkNotNull(upstream, "upstream is null");
+        checkNotNull(upstream, "upstream is null");
         return new RxDisposeFlowable<>(upstream, observable.toFlowable(BackpressureStrategy.LATEST));
     }
 
     @Override
     public SingleSource<T> apply(Single<T> upstream) {
-        Preconditions.checkNotNull(upstream, "upstream is null");
-        return RxJavaPlugins.onAssembly(new RxDisposeSingle<>(upstream, new SingleToFlowable<>(observable.firstOrError())));
+        checkNotNull(upstream, "upstream is null");
+        return RxJavaPlugins
+                .onAssembly(new RxDisposeSingle<>(upstream, new SingleToFlowable<>(observable.firstOrError())));
     }
 
     @Override
     public MaybeSource<T> apply(Maybe<T> upstream) {
-        Preconditions.checkNotNull(upstream, "upstream is null");
+        checkNotNull(upstream, "upstream is null");
         return new RxDisposeMaybe<>(upstream, observable.firstElement());
     }
 
     @Override
     public CompletableSource apply(Completable upstream) {
-        Preconditions.checkNotNull(upstream, "upstream is null");
-        return new RxDisposeCompletable(upstream, observable.flatMapCompletable(Functions.CANCEL_COMPLETABLE));
+        checkNotNull(upstream, "upstream is null");
+        return new RxDisposeCompletable(upstream, observable.firstOrError().ignoreElement());
     }
 
     @Override
@@ -102,8 +99,6 @@ public final class LifecycleTransformer<T> implements ObservableTransformer<T, T
 
     @Override
     public String toString() {
-        return "LifecycleTransformer{" +
-                "observable=" + observable +
-                '}';
+        return "LifecycleTransformer{" + "observable=" + observable + '}';
     }
 }

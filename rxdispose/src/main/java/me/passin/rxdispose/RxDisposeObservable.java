@@ -15,12 +15,13 @@ import java.util.concurrent.atomic.AtomicReference;
  * @date: 2019/5/19 22:12
  * @desc:
  */
+@SuppressWarnings("unchecked")
 public class RxDisposeObservable<T, U> extends Observable<T> {
 
     final ObservableSource<T> source;
     final ObservableSource<? extends U> other;
 
-    public RxDisposeObservable(ObservableSource<T> source, ObservableSource<? extends U> other) {
+    RxDisposeObservable(ObservableSource<T> source, ObservableSource<? extends U> other) {
         this.source = source;
         this.other = other;
     }
@@ -38,15 +39,16 @@ public class RxDisposeObservable<T, U> extends Observable<T> {
             implements Observer<T>, Disposable {
 
         final Observer<? super T> downstream;
-
         final AtomicReference<Disposable> upstream;
-
         final TakeUntilMainObserver.OtherObserver otherObserver;
-
         final AtomicThrowable error;
+        Disposable downstreamDispose;
 
         TakeUntilMainObserver(Observer<? super T> downstream) {
             this.downstream = downstream;
+            if (downstream instanceof Disposable) {
+                downstreamDispose = (Disposable) downstream;
+            }
             this.upstream = new AtomicReference<>();
             this.otherObserver = new TakeUntilMainObserver.OtherObserver();
             this.error = new AtomicThrowable();
@@ -91,12 +93,14 @@ public class RxDisposeObservable<T, U> extends Observable<T> {
         }
 
         void otherComplete() {
-            DisposableHelper.dispose(upstream);
+            if (downstreamDispose != null) {
+                downstreamDispose.dispose();
+            } else {
+                dispose();
+            }
         }
 
-
-        final class OtherObserver extends AtomicReference<Disposable>
-                implements Observer<U> {
+        final class OtherObserver extends AtomicReference<Disposable> implements Observer<U> {
 
             @Override
             public void onSubscribe(Disposable d) {
@@ -117,8 +121,6 @@ public class RxDisposeObservable<T, U> extends Observable<T> {
             public void onComplete() {
                 otherComplete();
             }
-
         }
     }
-
 }

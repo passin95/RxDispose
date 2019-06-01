@@ -20,7 +20,7 @@ public class RxDisposeCompletable extends Completable {
     final Completable source;
     final CompletableSource other;
 
-    public RxDisposeCompletable(Completable source, CompletableSource other) {
+    RxDisposeCompletable(Completable source, CompletableSource other) {
         this.source = source;
         this.other = other;
     }
@@ -38,14 +38,16 @@ public class RxDisposeCompletable extends Completable {
             implements CompletableObserver, Disposable {
 
         final CompletableObserver downstream;
-
         final TakeUntilMainObserver.OtherObserver other;
-
         final AtomicBoolean once;
+        Disposable downstreamDispose;
 
         TakeUntilMainObserver(CompletableObserver downstream) {
             this.downstream = downstream;
-            this.other = new TakeUntilMainObserver.OtherObserver(this);
+            if (downstream instanceof Disposable) {
+                downstreamDispose = (Disposable) downstream;
+            }
+            this.other = new TakeUntilMainObserver.OtherObserver();
             this.once = new AtomicBoolean();
         }
 
@@ -85,18 +87,9 @@ public class RxDisposeCompletable extends Completable {
             }
         }
 
-        void innerComplete() {
-            if (once.compareAndSet(false, true)) {
-                DisposableHelper.dispose(this);
-                downstream.onComplete();
-            }
-        }
-
-        void innerError(Throwable e) {
+        void otherError(Throwable e) {
             if (e instanceof CancellationException) {
-                if (once.compareAndSet(false, true)) {
-                    DisposableHelper.dispose(this);
-                }
+                onComplete();
                 return;
             }
             if (once.compareAndSet(false, true)) {
@@ -107,14 +100,15 @@ public class RxDisposeCompletable extends Completable {
             }
         }
 
-        static final class OtherObserver extends AtomicReference<Disposable>
-                implements CompletableObserver {
-
-            final TakeUntilMainObserver parent;
-
-            OtherObserver(TakeUntilMainObserver parent) {
-                this.parent = parent;
+        void otherComplete() {
+            if (downstreamDispose != null) {
+                downstreamDispose.dispose();
+            } else {
+                dispose();
             }
+        }
+
+        final class OtherObserver extends AtomicReference<Disposable> implements CompletableObserver {
 
             @Override
             public void onSubscribe(Disposable d) {
@@ -123,12 +117,12 @@ public class RxDisposeCompletable extends Completable {
 
             @Override
             public void onComplete() {
-                parent.innerComplete();
+                otherComplete();
             }
 
             @Override
             public void onError(Throwable e) {
-                parent.innerError(e);
+                otherError(e);
             }
         }
     }

@@ -14,13 +14,15 @@
 
 package me.passin.rxdispose;
 
-import io.reactivex.Completable;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
-import java.util.concurrent.CancellationException;
 
 final class Functions {
+
+    private Functions() {
+        throw new AssertionError("No instances!");
+    }
 
     static final Function<Throwable, Boolean> RESUME_FUNCTION = new Function<Throwable, Boolean>() {
         @Override
@@ -40,15 +42,4 @@ final class Functions {
             return shouldComplete;
         }
     };
-
-    static final Function<Object, Completable> CANCEL_COMPLETABLE = new Function<Object, Completable>() {
-        @Override
-        public Completable apply(Object ignore) throws Exception {
-            return Completable.error(new CancellationException());
-        }
-    };
-
-    private Functions() {
-        throw new AssertionError("No instances!");
-    }
 }

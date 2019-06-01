@@ -10,5 +10,4 @@ import me.passin.rxdispose.EventProvider;
 public interface ICostomEventProvider extends EventProvider<Object> {
 
     void sendCostomEvent(Object event);
-
 }

@@ -13,21 +13,20 @@ import java.util.concurrent.atomic.AtomicReference;
  * @date: 2019/5/19 23:24
  * @desc:
  */
+@SuppressWarnings("unchecked")
 public class RxDisposeMaybe<T, U> extends Maybe<T> {
 
     final MaybeSource<T> source;
     final MaybeSource<U> other;
 
-    public RxDisposeMaybe(MaybeSource<T> source, MaybeSource<U> other) {
+    RxDisposeMaybe(MaybeSource<T> source, MaybeSource<U> other) {
         this.source = source;
         this.other = other;
     }
 
     @Override
     protected void subscribeActual(MaybeObserver<? super T> observer) {
-        TakeUntilMainMaybeObserver<T, U> parent =
-                new TakeUntilMainMaybeObserver<>(
-                        observer);
+        TakeUntilMainMaybeObserver<T> parent = new TakeUntilMainMaybeObserver<>(observer);
         observer.onSubscribe(parent);
 
         other.subscribe(parent.other);
@@ -35,16 +34,19 @@ public class RxDisposeMaybe<T, U> extends Maybe<T> {
         source.subscribe(parent);
     }
 
-    static final class TakeUntilMainMaybeObserver<T, U>
+    static final class TakeUntilMainMaybeObserver<T>
             extends AtomicReference<Disposable> implements MaybeObserver<T>, Disposable {
 
         final MaybeObserver<? super T> downstream;
-
-        final TakeUntilMainMaybeObserver.TakeUntilOtherMaybeObserver<U> other;
+        final OtherObserver other;
+        Disposable downstreamDispose;
 
         TakeUntilMainMaybeObserver(MaybeObserver<? super T> downstream) {
             this.downstream = downstream;
-            this.other = new TakeUntilMainMaybeObserver.TakeUntilOtherMaybeObserver<>(this);
+            if (downstream instanceof Disposable) {
+                downstreamDispose = (Disposable) downstream;
+            }
+            this.other = new OtherObserver();
         }
 
         @Override
@@ -98,17 +100,14 @@ public class RxDisposeMaybe<T, U> extends Maybe<T> {
         }
 
         void otherComplete() {
-            DisposableHelper.dispose(this);
+            if (downstreamDispose != null) {
+                downstreamDispose.dispose();
+            } else {
+                dispose();
+            }
         }
 
-        static final class TakeUntilOtherMaybeObserver<U>
-                extends AtomicReference<Disposable> implements MaybeObserver<U> {
-
-            final TakeUntilMainMaybeObserver<?, U> parent;
-
-            TakeUntilOtherMaybeObserver(TakeUntilMainMaybeObserver<?, U> parent) {
-                this.parent = parent;
-            }
+        final class OtherObserver<U> extends AtomicReference<Disposable> implements MaybeObserver<U> {
 
             @Override
             public void onSubscribe(Disposable d) {
@@ -117,19 +116,18 @@ public class RxDisposeMaybe<T, U> extends Maybe<T> {
 
             @Override
             public void onSuccess(Object value) {
-                parent.otherComplete();
+                otherComplete();
             }
 
             @Override
             public void onError(Throwable e) {
-                parent.otherError(e);
+                otherError(e);
             }
 
             @Override
             public void onComplete() {
-                parent.otherComplete();
+                otherComplete();
             }
         }
     }
-
 }

@@ -17,7 +17,6 @@ package me.passin.rxdispose.android;
 import static me.passin.rxdispose.RxDispose.bind;
 import static me.passin.rxdispose.utils.Preconditions.checkNotNull;
 
-import android.support.annotation.CheckResult;
 import android.view.View;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
@@ -32,19 +31,16 @@ public class RxDisposeAndroid {
     }
 
     @NonNull
-    @CheckResult
     public static <T> LifecycleTransformer<T> bindActivity(@NonNull final Observable<ActivityEvent> lifecycle) {
         return bind(lifecycle, ACTIVITY_LIFECYCLE);
     }
 
     @NonNull
-    @CheckResult
     public static <T> LifecycleTransformer<T> bindFragment(@NonNull final Observable<FragmentEvent> lifecycle) {
         return bind(lifecycle, FRAGMENT_LIFECYCLE);
     }
 
     @NonNull
-    @CheckResult
     public static <T> LifecycleTransformer<T> bindView(@NonNull final View view) {
         checkNotNull(view, "view == null");
         return bind(Observable.create(new ViewDetachesOnSubscribe(view)));
@@ -73,7 +69,6 @@ public class RxDisposeAndroid {
                 }
             };
 
-    // Figures out which corresponding next lifecycle event in which to unsubscribe, for Fragments
     private static final Function<FragmentEvent, FragmentEvent> FRAGMENT_LIFECYCLE =
             new Function<FragmentEvent, FragmentEvent>() {
                 @Override
@@ -105,5 +100,4 @@ public class RxDisposeAndroid {
                     }
                 }
             };
-
 }

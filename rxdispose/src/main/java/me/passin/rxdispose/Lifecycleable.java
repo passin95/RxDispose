@@ -20,5 +20,4 @@ public interface Lifecycleable<E> {
 
     @NonNull
     EventProvider<E> provideEventProvider();
-
 }

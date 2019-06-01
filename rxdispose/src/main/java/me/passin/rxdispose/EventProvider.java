@@ -11,5 +11,5 @@ public interface EventProvider<T> {
 
     void sendLifecycleEvent(T t);
 
-    Observable getObservable();
+    Observable<T> getObservable();
 }

@@ -35,6 +35,7 @@ public class RxDispose {
 
     @NonNull
     @CheckReturnValue
+    @SuppressWarnings("unchecked")
     public static <T, R> LifecycleTransformer<T> bindUntilEvent(@NonNull final Observable<R> lifecycle,
             @NonNull final R... events) {
         checkNotNull(lifecycle, "lifecycle == null");
@@ -42,6 +43,7 @@ public class RxDispose {
         return bind(takeUntilEvent(lifecycle, events));
     }
 
+    @SuppressWarnings("unchecked")
     private static <R> Observable<R> takeUntilEvent(final Observable<R> lifecycle, final R... events) {
         return lifecycle.filter(new Predicate<R>() {
             @Override

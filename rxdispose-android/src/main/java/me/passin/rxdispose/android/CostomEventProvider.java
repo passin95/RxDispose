@@ -33,8 +33,7 @@ public class CostomEventProvider implements ICostomEventProvider {
     }
 
     @Override
-    public Observable getObservable() {
+    public Observable<Object> getObservable() {
         return mEventSubject;
     }
-
 }

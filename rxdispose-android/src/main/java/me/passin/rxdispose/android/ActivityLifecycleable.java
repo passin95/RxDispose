@@ -18,7 +18,7 @@ import me.passin.rxdispose.Lifecycleable;
 
 public interface ActivityLifecycleable extends Lifecycleable<Object> {
 
+    @Override
     @NonNull
     ICostomEventProvider provideEventProvider();
-
 }

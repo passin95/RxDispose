@@ -21,6 +21,5 @@ public interface FragmentLifecycleable extends Lifecycleable {
 
     @NonNull
     ICostomEventProvider provideEventProvider();
-
 }
 
