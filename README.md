@@ -38,10 +38,10 @@ provideEventProvider().sendCostomEvent(EXAMPLE_EVENT);
 ## 安装
 
 ```gradle
-implementation 'me.passin:rxdispose:1.0.0'
+implementation 'me.passin:rxdispose:1.0.1'
 
 // 应用在 Android 上
-implementation 'me.passin:rxdispose-android:1.0.0'
+implementation 'me.passin:rxdispose-android:1.0.1'
 ```
 
 ## License
