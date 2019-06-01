@@ -1,6 +1,6 @@
 # RxDispose
 
-该库基于 [RxLifecycle](https://github.com/trello/RxLifecycle) 改造得来，该库解决了 RxLifecycle 作者所陈述的[绝大部分问题](https://www.jianshu.com/p/6627e97eba8d)，
+该库基于 [RxLifecycle](https://github.com/trello/RxLifecycle) 改造得来，该库解决了 RxLifecycle 作者所陈述的 [绝大部分问题](https://www.jianshu.com/p/6627e97eba8d) ，
 新增了以下特性：
 1. 支持同时绑定和自定义多种生命周期事件，能够在任何时间和地点去控制取消订阅的时机。
 2. 能达到真正意义上取消订阅的效果，不再是模拟取消订阅，不会在取消订阅的同时回调 onCompleted 或者 onError(CancellationException)，能获取到正确的 Disposable 状态。
@@ -8,7 +8,7 @@
 
 ## 使用方式
 
-更多使用方式请参考 rxlifecycle-sample（使用前请必看一下 Demo，建议参考 Demo的使用方式使用）。
+更多使用方式请参考 rxlifecycle-sample（使用前请必看一下 Demo，建议参考 Demo 的使用方式使用）。
 
 ```java
 myObservable
