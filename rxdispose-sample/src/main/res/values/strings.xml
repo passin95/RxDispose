@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">RxDispose</string>
-    <string name="message">Check logcat tag "RxDispose" to see this sample in action. You\'ll need to finish
-        the Activity (or recreate it) to see the automatic unsubscription in action.</string>
+    <string name="message">Demo 运行详情请看 Log</string>
+    <string name="simple_example">简单示例</string>
+    <string name="custom_example">自定义事件示例</string>
 </resources>

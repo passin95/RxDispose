@@ -25,8 +25,8 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import java.util.concurrent.TimeUnit;
 import me.passin.rxdispose.Lifecycleable;
-import me.passin.rxdispose.android.ActivityEvent;
 import me.passin.rxdispose.sample.R;
+import me.passin.rxdispose.sample.utils.LogUtils;
 import me.passin.rxdispose.sample.utils.RxDisposeUtils;
 import me.passin.rxdispose.sample.way.RxActivity;
 
@@ -48,7 +48,7 @@ public class SampleActivity extends RxActivity implements IView {
     @SuppressLint("CheckResult")
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate()");
+        LogUtils.d(TAG, "onCreate()");
 
         setContentView(R.layout.activity_sample);
         mPresenter = new SamplePresenter(this);
@@ -57,14 +57,14 @@ public class SampleActivity extends RxActivity implements IView {
                 .doOnDispose(new Action() {
                     @Override
                     public void run() throws Exception {
-                        Log.i(TAG, "SampleActivity Unsubscribing subscription from onCreate()");
+                        LogUtils.i(TAG, "取消订阅成功：bindToLifecycle，订阅时间：onCreate()");
                     }
                 })
                 .compose(RxDisposeUtils.<Long>bindToLifecycle((Lifecycleable) this))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {
-                        Log.i(TAG, "SampleActivity Started in onCreate(), running until onDestroy(): " + num);
+                        LogUtils.i(TAG, "开始于：onCreate(), 运行至： onDestroy(): " + num);
                     }
                 });
     }
@@ -73,25 +73,9 @@ public class SampleActivity extends RxActivity implements IView {
     @SuppressLint("CheckResult")
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart()");
+        LogUtils.d(TAG, "onStart()");
 
         mPresenter.onStart();
-
-        Observable.interval(1, TimeUnit.SECONDS)
-                .doOnDispose(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        Log.i(TAG, "SampleActivity Unsubscribing subscription from onStart()");
-                    }
-                })
-                .compose(
-                        RxDisposeUtils.<Long>bindUntilEvent((Lifecycleable) this, ActivityEvent.PAUSE))
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long num) throws Exception {
-                        Log.i(TAG, "SampleActivity Started in onStart(), running until in onStop(): " + num);
-                    }
-                });
     }
 
     @Override
@@ -100,20 +84,18 @@ public class SampleActivity extends RxActivity implements IView {
         super.onResume();
         Log.d(TAG, "onResume()");
 
-        mPresenter.onResume();
-
         Observable.interval(1, TimeUnit.SECONDS)
                 .doOnDispose(new Action() {
                     @Override
                     public void run() throws Exception {
-                        Log.i(TAG, "SampleActivity Unsubscribing subscription from onResume()");
+                        LogUtils.i(TAG, "取消订阅成功：bindToLifecycle，订阅时间：onResume()");
                     }
                 })
                 .compose(RxDisposeUtils.<Long>bindToLifecycle((Lifecycleable) this))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {
-                        Log.i(TAG, "SampleActivity Started in onResume(), running until in onPause(): " + num);
+                        LogUtils.i(TAG, "开始于：onResume(), 运行至： onPause(): " + num);
                     }
                 });
     }
@@ -128,14 +110,14 @@ public class SampleActivity extends RxActivity implements IView {
                 .doOnDispose(new Action() {
                     @Override
                     public void run() throws Exception {
-                        Log.i(TAG, "SampleActivity Unsubscribing subscription from onPause()");
+                        LogUtils.i(TAG, "取消订阅成功：bindToLifecycle，订阅时间：onPause()");
                     }
                 })
                 .compose(RxDisposeUtils.<Long>bindToLifecycle((Lifecycleable) this))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {
-                        Log.i(TAG, "SampleActivity Started in onResume(), running until in onStop(): " + num);
+                        LogUtils.i(TAG, "开始于：onPause(), 运行至： onStop(): " + num);
                     }
                 });
     }
@@ -143,12 +125,12 @@ public class SampleActivity extends RxActivity implements IView {
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop()");
+        LogUtils.d(TAG, "onStop()");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy()");
+        LogUtils.d(TAG, "onDestroy()");
     }
 }

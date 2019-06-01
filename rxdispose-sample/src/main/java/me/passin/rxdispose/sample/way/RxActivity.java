@@ -16,6 +16,7 @@ package me.passin.rxdispose.sample.way;
 
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import me.passin.rxdispose.android.ActivityEvent;
@@ -27,6 +28,7 @@ public class RxActivity extends AppCompatActivity implements ActivityLifecycleab
 
     private final ICostomEventProvider mCostomEventProvide = CostomEventProvider.create();
 
+    @NonNull
     @Override
     public ICostomEventProvider provideEventProvider() {
         return mCostomEventProvide;
@@ -73,5 +75,4 @@ public class RxActivity extends AppCompatActivity implements ActivityLifecycleab
         mCostomEventProvide.sendLifecycleEvent(ActivityEvent.DESTROY);
         super.onDestroy();
     }
-
 }

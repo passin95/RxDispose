@@ -6,16 +6,17 @@
     android:layout_height="match_parent">
 
     <Button
+        android:id="@+id/tv_test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="jumpToSampleActivity"
-        android:text="普通实例" />
+        android:text="@string/simple_example" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="jumpToCustomActivity"
-        android:text="自定义事件实例"
+        android:text="@string/custom_example"
         />
 
 </LinearLayout>

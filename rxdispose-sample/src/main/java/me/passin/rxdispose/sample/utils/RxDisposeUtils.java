@@ -16,8 +16,8 @@ package me.passin.rxdispose.sample.utils;
 import static me.passin.rxdispose.utils.Preconditions.checkNotNull;
 
 import io.reactivex.annotations.NonNull;
-import me.passin.rxdispose.Lifecycleable;
 import me.passin.rxdispose.LifecycleTransformer;
+import me.passin.rxdispose.Lifecycleable;
 import me.passin.rxdispose.RxDispose;
 import me.passin.rxdispose.android.ActivityLifecycleable;
 import me.passin.rxdispose.android.FragmentLifecycleable;
@@ -28,9 +28,9 @@ import me.passin.rxdispose.sample.view.sample.IView;
  * @author : passin
  * @date: 2019/3/15 10:27
  */
+@SuppressWarnings("unchecked")
 public class RxDisposeUtils {
 
-    @SuppressWarnings("unchecked")
     public static <T> LifecycleTransformer<T> bindUntilEvent(@NonNull final IView view,
             @NonNull final Object... event) {
         checkNotNull(view, "view == null");
@@ -41,7 +41,6 @@ public class RxDisposeUtils {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> LifecycleTransformer<T> bindUntilEvent(
             @NonNull final Lifecycleable<Object> lifecycleable, @NonNull final Object... event) {
         checkNotNull(lifecycleable, "lifecycleable == null");
@@ -49,7 +48,6 @@ public class RxDisposeUtils {
         return RxDispose.bindUntilEvent(lifecycleable.provideEventProvider().getObservable(), event);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull IView view) {
         checkNotNull(view, "view == null");
         if (view instanceof Lifecycleable) {
@@ -59,7 +57,6 @@ public class RxDisposeUtils {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull Lifecycleable lifecycleProvider) {
         checkNotNull(lifecycleProvider, "lifecycleProvider == null");
         if (lifecycleProvider instanceof ActivityLifecycleable) {
@@ -70,5 +67,4 @@ public class RxDisposeUtils {
             throw new IllegalArgumentException("lifecycleProvider not match");
         }
     }
-
 }

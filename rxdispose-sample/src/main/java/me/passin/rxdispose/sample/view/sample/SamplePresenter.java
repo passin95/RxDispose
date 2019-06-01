@@ -17,19 +17,19 @@ package me.passin.rxdispose.sample.view.sample;
 import static me.passin.rxdispose.sample.view.sample.SampleActivity.TAG;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import io.reactivex.Observable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import java.util.concurrent.TimeUnit;
 import me.passin.rxdispose.android.ActivityEvent;
+import me.passin.rxdispose.sample.utils.LogUtils;
 import me.passin.rxdispose.sample.utils.RxDisposeUtils;
 
 /**
  * @author : passin
  * @date: 2019/3/15 13:42
  */
-public class SamplePresenter  {
+public class SamplePresenter {
 
     private IView mView;
 
@@ -43,32 +43,14 @@ public class SamplePresenter  {
                 .doOnDispose(new Action() {
                     @Override
                     public void run() throws Exception {
-                        Log.i(TAG, "SamplePresenter Unsubscribing subscription from onStart()");
+                        LogUtils.i(TAG, "取消订阅成功：bindUntilEvent ActivityEvent.PAUSE，订阅时间：onStart()");
                     }
                 })
                 .compose(RxDisposeUtils.<Long>bindUntilEvent(mView, ActivityEvent.PAUSE))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {
-                        Log.i(TAG, "SamplePresenter Started in onStart(), running until in onPause(): " + num);
-                    }
-                });
-    }
-
-    @SuppressLint("CheckResult")
-    public void onResume() {
-        Observable.interval(1, TimeUnit.SECONDS)
-                .doOnDispose(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        Log.i(TAG, "SamplePresenter Unsubscribing subscription from onResume()");
-                    }
-                })
-                .compose(RxDisposeUtils.<Long>bindUntilEvent(mView, ActivityEvent.DESTROY))
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long num) throws Exception {
-                        Log.i(TAG, "SamplePresenter Started in onResume(), running until in onDestroy(): " + num);
+                        LogUtils.i(TAG, "开始于：onStart(), 运行至： onPause(): " + num);
                     }
                 });
     }

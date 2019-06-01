@@ -79,7 +79,6 @@ public class ActivityLifecycleForRxDispose implements Application.ActivityLifecy
 
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
     }
 
     @Override
@@ -92,5 +91,4 @@ public class ActivityLifecycleForRxDispose implements Application.ActivityLifecy
     private ICostomEventProvider obtainEventProvider(Activity activity) {
         return ((ActivityLifecycleable) activity).provideEventProvider();
     }
-
 }

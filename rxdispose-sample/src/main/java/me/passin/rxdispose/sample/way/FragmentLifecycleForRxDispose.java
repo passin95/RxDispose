@@ -29,7 +29,6 @@ import me.passin.rxdispose.android.ICostomEventProvider;
  */
 public class FragmentLifecycleForRxDispose extends FragmentManager.FragmentLifecycleCallbacks {
 
-
     public FragmentLifecycleForRxDispose() {
     }
 
