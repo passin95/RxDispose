@@ -14,9 +14,6 @@
 
 package me.passin.rxdispose;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-
 import android.app.Activity;
 import android.view.View;
 import io.reactivex.Observable;
@@ -27,6 +24,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import me.passin.rxdispose.android.ActivityEvent;
 import me.passin.rxdispose.android.FragmentEvent;
 import me.passin.rxdispose.android.RxDisposeAndroid;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +46,7 @@ public class RxLifecycleTest {
 
     @Test
     public void testBindActivityLifecycle() {
-        BehaviorSubject<ActivityEvent> lifecycle = BehaviorSubject.create();
+        BehaviorSubject<Object> lifecycle = BehaviorSubject.create();
 
         lifecycle.onNext(ActivityEvent.CREATE);
         TestObserver<Object> createObserver = observable.compose(RxDisposeAndroid.bindActivity(lifecycle)).test();
@@ -83,7 +82,7 @@ public class RxLifecycleTest {
 
     @Test
     public void testBindUntilActivityEvent() {
-        BehaviorSubject<ActivityEvent> lifecycle = BehaviorSubject.create();
+        BehaviorSubject<Object> lifecycle = BehaviorSubject.create();
 
         TestObserver<Object> testObserver =
                 observable.compose(RxDispose.bindUntilEvent(lifecycle, ActivityEvent.STOP)).test();
@@ -102,10 +101,9 @@ public class RxLifecycleTest {
         assert testObserver.isCancelled();
     }
 
-
     @Test
     public void testBindFragmentLifecycle() {
-        BehaviorSubject<FragmentEvent> lifecycle = BehaviorSubject.create();
+        BehaviorSubject<Object> lifecycle = BehaviorSubject.create();
 
         lifecycle.onNext(FragmentEvent.ATTACH);
         TestObserver<Object> attachObserver = observable.compose(RxDisposeAndroid.bindFragment(lifecycle)).test();
@@ -168,7 +166,7 @@ public class RxLifecycleTest {
 
     @Test
     public void testBindUntilFragmentEvent() {
-        BehaviorSubject<FragmentEvent> lifecycle = BehaviorSubject.create();
+        BehaviorSubject<Object> lifecycle = BehaviorSubject.create();
 
         TestObserver<Object> testObserver =
                 observable.compose(RxDispose.bindUntilEvent(lifecycle, FragmentEvent.STOP)).test();
@@ -192,7 +190,6 @@ public class RxLifecycleTest {
         lifecycle.onNext(FragmentEvent.DETACH);
         assert testObserver.isCancelled();
     }
-
 
     @Test
     public void testBindView() {
@@ -238,4 +235,5 @@ public class RxLifecycleTest {
         //noinspection ResourceType
         RxDisposeAndroid.bindView(null);
     }
+
 }
