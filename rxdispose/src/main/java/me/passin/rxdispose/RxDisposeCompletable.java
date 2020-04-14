@@ -6,7 +6,6 @@ import io.reactivex.CompletableSource;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.plugins.RxJavaPlugins;
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -88,10 +87,6 @@ public class RxDisposeCompletable extends Completable {
         }
 
         void otherError(Throwable e) {
-            if (e instanceof CancellationException) {
-                onComplete();
-                return;
-            }
             if (once.compareAndSet(false, true)) {
                 DisposableHelper.dispose(this);
                 downstream.onError(e);
