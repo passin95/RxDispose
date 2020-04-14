@@ -20,7 +20,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import me.passin.rxdispose.android.ActivityEvent;
 import me.passin.rxdispose.android.ActivityLifecycleable;
-import me.passin.rxdispose.android.ICostomEventProvider;
+import me.passin.rxdispose.android.ActivityEventProvider;
 
 /**
  * @author : passin
@@ -88,7 +88,7 @@ public class ActivityLifecycleForRxDispose implements Application.ActivityLifecy
         }
     }
 
-    private ICostomEventProvider obtainEventProvider(Activity activity) {
-        return ((ActivityLifecycleable) activity).provideEventProvider();
+    private ActivityEventProvider obtainEventProvider(Activity activity) {
+        return ((ActivityLifecycleable) activity).getEventProvider();
     }
 }

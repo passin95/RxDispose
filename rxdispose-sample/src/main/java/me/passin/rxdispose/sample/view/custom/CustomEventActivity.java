@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import io.reactivex.Observable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import java.util.concurrent.TimeUnit;
 import me.passin.rxdispose.android.ActivityEvent;
+import me.passin.rxdispose.android.RxDisposeAndroid;
 import me.passin.rxdispose.sample.R;
 import me.passin.rxdispose.sample.utils.LogUtils;
 import me.passin.rxdispose.sample.utils.RxDisposeUtils;
@@ -27,6 +30,9 @@ public class CustomEventActivity extends RxActivity {
     private static final Object EXAMPLE_EVENT = new Object();
     private static final Object CLICK_EVENT = new Object();
 
+    private LinearLayout mLlRoot;
+    private Button mBtnTest;
+
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, CustomEventActivity.class));
     }
@@ -35,6 +41,8 @@ public class CustomEventActivity extends RxActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_event);
+        mLlRoot = findViewById(R.id.ll_root);
+        mBtnTest = findViewById(R.id.btn_test);
     }
 
     /**
@@ -46,7 +54,7 @@ public class CustomEventActivity extends RxActivity {
                 .doOnDispose(new Action() {
                     @Override
                     public void run() throws Exception {
-                        LogUtils.i(TAG, "取消订阅成功：bindUntilEvent onDestroy(),EXAMPLE_EVENT，订阅时间：按钮点击");
+                        LogUtils.i(TAG, "取消订阅成功：bindUntilEvent ActivityEvent.DESTROY,EXAMPLE_EVENT，订阅时间：按钮点击");
                     }
                 })
                 .compose(
@@ -68,7 +76,7 @@ public class CustomEventActivity extends RxActivity {
                 .doOnDispose(new Action() {
                     @Override
                     public void run() throws Exception {
-                        LogUtils.i(TAG, "取消订阅成功：bindUntilEvent onPause(),CLICK_EVENT，订阅时间：按钮点击");
+                        LogUtils.i(TAG, "取消订阅成功：ActivityEvent.PAUSE,CLICK_EVENT，订阅时间：按钮点击");
                     }
                 })
                 .compose(RxDisposeUtils.<Long>bindUntilEvent(this, ActivityEvent.PAUSE, CLICK_EVENT))
@@ -80,15 +88,47 @@ public class CustomEventActivity extends RxActivity {
                 });
     }
 
+    /**
+     * 开启轮训直到 onStop() 或者 ClickEvent
+     */
+    @SuppressLint("CheckResult")
+    public void trainingInRotationUntilClickEventOrRemoveView(View view) {
+        Observable.interval(1, TimeUnit.SECONDS)
+                .doOnDispose(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        LogUtils.i(TAG, "取消订阅成功：bindUntilEvent RemoveView, CLICK_EVENT，订阅时间：按钮点击");
+                    }
+                })
+                .compose(RxDisposeAndroid.<Long>bindView(mBtnTest, getEventProvider().getObservable(), CLICK_EVENT))
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long num) throws Exception {
+                        LogUtils.i(TAG, "开始于：按钮点击, 运行至：RemoveView 或 CLICK_EVENT " + num);
+                    }
+                });
+    }
+
+    public void addView(View view) {
+        if (mLlRoot.indexOfChild(mBtnTest) == -1) {
+            mLlRoot.addView(mBtnTest);
+        }
+    }
+
+    public void removeView(View view) {
+        mLlRoot.removeView(mBtnTest);
+    }
+
     public void triggerExceptionEvent(View view) {
         try {
             throw new Exception("this is a excepation");
         } catch (Exception e) {
-            provideEventProvider().sendCostomEvent(EXAMPLE_EVENT);
+            getEventProvider().sendCostomEvent(EXAMPLE_EVENT);
         }
     }
 
     public void triggerClickEvent(View view) {
-        provideEventProvider().sendCostomEvent(CLICK_EVENT);
+        getEventProvider().sendCostomEvent(CLICK_EVENT);
     }
+
 }

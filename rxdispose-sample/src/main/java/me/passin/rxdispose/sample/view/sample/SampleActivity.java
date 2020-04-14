@@ -24,7 +24,7 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import java.util.concurrent.TimeUnit;
-import me.passin.rxdispose.Lifecycleable;
+import me.passin.rxdispose.android.ActivityLifecycleable;
 import me.passin.rxdispose.sample.R;
 import me.passin.rxdispose.sample.utils.LogUtils;
 import me.passin.rxdispose.sample.utils.RxDisposeUtils;
@@ -60,7 +60,7 @@ public class SampleActivity extends RxActivity implements IView {
                         LogUtils.i(TAG, "取消订阅成功：bindToLifecycle，订阅时间：onCreate()");
                     }
                 })
-                .compose(RxDisposeUtils.<Long>bindToLifecycle((Lifecycleable) this))
+                .compose(RxDisposeUtils.<Long>bindToLifecycle((ActivityLifecycleable) this))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {
@@ -91,7 +91,7 @@ public class SampleActivity extends RxActivity implements IView {
                         LogUtils.i(TAG, "取消订阅成功：bindToLifecycle，订阅时间：onResume()");
                     }
                 })
-                .compose(RxDisposeUtils.<Long>bindToLifecycle((Lifecycleable) this))
+                .compose(RxDisposeUtils.<Long>bindToLifecycle((ActivityLifecycleable) this))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {
@@ -113,7 +113,7 @@ public class SampleActivity extends RxActivity implements IView {
                         LogUtils.i(TAG, "取消订阅成功：bindToLifecycle，订阅时间：onPause()");
                     }
                 })
-                .compose(RxDisposeUtils.<Long>bindToLifecycle((Lifecycleable) this))
+                .compose(RxDisposeUtils.<Long>bindToLifecycle((ActivityLifecycleable) this))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long num) throws Exception {
@@ -133,4 +133,5 @@ public class SampleActivity extends RxActivity implements IView {
         super.onDestroy();
         LogUtils.d(TAG, "onDestroy()");
     }
+
 }

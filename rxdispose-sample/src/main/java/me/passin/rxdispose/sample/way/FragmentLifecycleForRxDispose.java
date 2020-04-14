@@ -20,8 +20,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import me.passin.rxdispose.android.FragmentEvent;
+import me.passin.rxdispose.android.FragmentEventProvider;
 import me.passin.rxdispose.android.FragmentLifecycleable;
-import me.passin.rxdispose.android.ICostomEventProvider;
 
 /**
  * @author : passin
@@ -102,7 +102,7 @@ public class FragmentLifecycleForRxDispose extends FragmentManager.FragmentLifec
         }
     }
 
-    private ICostomEventProvider obtainSubject(Fragment fragment) {
-        return ((FragmentLifecycleable) fragment).provideEventProvider();
+    private FragmentEventProvider obtainSubject(Fragment fragment) {
+        return ((FragmentLifecycleable) fragment).getEventProvider();
     }
 }

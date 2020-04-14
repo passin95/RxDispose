@@ -20,17 +20,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import me.passin.rxdispose.android.ActivityEvent;
+import me.passin.rxdispose.android.ActivityEventProvider;
 import me.passin.rxdispose.android.ActivityLifecycleable;
-import me.passin.rxdispose.android.CostomEventProvider;
-import me.passin.rxdispose.android.ICostomEventProvider;
 
 public class RxActivity extends AppCompatActivity implements ActivityLifecycleable {
 
-    private final ICostomEventProvider mCostomEventProvide = CostomEventProvider.create();
+    private final ActivityEventProvider mCostomEventProvide = ActivityEventProvider.create();
 
     @NonNull
     @Override
-    public ICostomEventProvider provideEventProvider() {
+    public ActivityEventProvider getEventProvider() {
         return mCostomEventProvide;
     }
 

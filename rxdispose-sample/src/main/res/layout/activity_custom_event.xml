@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_root"
     android:layout_width="match_parent"
-    android:padding="10dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <Button
-        android:text="开启轮训直到 onDestroy() 或者 ExceptionEvent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="trainingInRotationUntilExceptionEvent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:text="开启轮训直到 onStop() 或者 ClickEvent"
-        android:onClick="trainingInRotationUntilClickEvent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:text="开启轮训直到 onDestroy() 或者 ExceptionEvent" />
 
     <Button
         android:layout_width="match_parent"
@@ -26,7 +22,36 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="trainingInRotationUntilClickEvent"
+        android:text="开启轮训直到 onStop() 或者 ClickEvent" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="triggerClickEvent"
         android:text="点击触发 ClickEvent" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="trainingInRotationUntilClickEventOrRemoveView"
+        android:text="开启轮训直到 ClickEvent 或视图被移除" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="addView"
+        android:text="添加视图" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="removeView"
+        android:text="移除视图" />
+
+    <Button
+        android:id="@+id/btn_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="我是被添加的视图" />
 </LinearLayout>
