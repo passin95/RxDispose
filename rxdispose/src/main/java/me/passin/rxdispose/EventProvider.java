@@ -7,9 +7,10 @@ import io.reactivex.Observable;
  * @date: 2019/3/27 17:38
  * @desc:
  */
-public interface EventProvider<T> {
+public interface EventProvider<T, R> {
 
     void sendLifecycleEvent(T t);
 
-    Observable<T> getObservable();
+    Observable<R> getObservable();
+
 }

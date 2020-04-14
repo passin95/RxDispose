@@ -16,8 +16,9 @@ package me.passin.rxdispose;
 
 import android.support.annotation.NonNull;
 
-public interface Lifecycleable<E> {
+public interface Lifecycleable<T, R> {
 
     @NonNull
-    EventProvider<E> provideEventProvider();
+    EventProvider<T, R> getEventProvider();
+
 }
