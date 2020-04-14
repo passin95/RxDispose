@@ -32,8 +32,6 @@ import io.reactivex.ObservableTransformer;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.SingleTransformer;
-import io.reactivex.internal.operators.single.SingleToFlowable;
-import io.reactivex.plugins.RxJavaPlugins;
 import org.reactivestreams.Publisher;
 
 public final class LifecycleTransformer<T> implements ObservableTransformer<T, T>,
@@ -61,9 +59,7 @@ public final class LifecycleTransformer<T> implements ObservableTransformer<T, T
 
     @Override
     public SingleSource<T> apply(Single<T> upstream) {
-        checkNotNull(upstream, "upstream is null");
-        return RxJavaPlugins
-                .onAssembly(new RxDisposeSingle<>(upstream, new SingleToFlowable<>(observable.firstOrError())));
+        return new RxDisposeSingle<>(upstream, new ObservableToSingle<>(observable));
     }
 
     @Override

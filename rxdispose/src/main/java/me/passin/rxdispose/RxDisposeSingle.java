@@ -1,16 +1,12 @@
 package me.passin.rxdispose;
 
-import io.reactivex.FlowableSubscriber;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.SingleSource;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.DisposableHelper;
-import io.reactivex.internal.subscriptions.SubscriptionHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 import java.util.concurrent.atomic.AtomicReference;
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscription;
 
 /**
  * @author: zbb 33775
@@ -19,17 +15,17 @@ import org.reactivestreams.Subscription;
  */
 public class RxDisposeSingle<T, U> extends Single<T> {
 
-    final SingleSource<T> source;
-    final Publisher<U> other;
+    private final SingleSource<T> source;
+    private final SingleSource<U> other;
 
-    RxDisposeSingle(SingleSource<T> source, Publisher<U> other) {
+    RxDisposeSingle(SingleSource<T> source, SingleSource<U> other) {
         this.source = source;
         this.other = other;
     }
 
     @Override
     protected void subscribeActual(SingleObserver<? super T> observer) {
-        TakeUntilMainObserver<T> parent = new TakeUntilMainObserver<>(observer);
+        TakeUntilMainObserver parent = new TakeUntilMainObserver(observer);
         observer.onSubscribe(parent);
 
         other.subscribe(parent.other);
@@ -37,11 +33,11 @@ public class RxDisposeSingle<T, U> extends Single<T> {
         source.subscribe(parent);
     }
 
-    static final class TakeUntilMainObserver<T> extends AtomicReference<Disposable>
+    final class TakeUntilMainObserver extends AtomicReference<Disposable>
             implements SingleObserver<T>, Disposable {
 
         final SingleObserver<? super T> downstream;
-        final TakeUntilOtherSubscriber other;
+        final TakeUntilOtherSingle other;
         Disposable downstreamDispose;
 
         TakeUntilMainObserver(SingleObserver<? super T> downstream) {
@@ -49,13 +45,13 @@ public class RxDisposeSingle<T, U> extends Single<T> {
             if (downstream instanceof Disposable) {
                 downstreamDispose = (Disposable) downstream;
             }
-            this.other = new TakeUntilOtherSubscriber();
+            this.other = new TakeUntilOtherSingle();
         }
 
         @Override
         public void dispose() {
             DisposableHelper.dispose(this);
-            SubscriptionHelper.cancel(other);
+            DisposableHelper.dispose(other);
         }
 
         @Override
@@ -70,7 +66,7 @@ public class RxDisposeSingle<T, U> extends Single<T> {
 
         @Override
         public void onSuccess(T value) {
-            SubscriptionHelper.cancel(other);
+            DisposableHelper.dispose(other);
             Disposable a = getAndSet(DisposableHelper.DISPOSED);
             if (a != DisposableHelper.DISPOSED) {
                 downstream.onSuccess(value);
@@ -79,7 +75,7 @@ public class RxDisposeSingle<T, U> extends Single<T> {
 
         @Override
         public void onError(Throwable e) {
-            SubscriptionHelper.cancel(other);
+            DisposableHelper.dispose(other);
             Disposable a = get();
             if (a != DisposableHelper.DISPOSED) {
                 a = getAndSet(DisposableHelper.DISPOSED);
@@ -114,33 +110,26 @@ public class RxDisposeSingle<T, U> extends Single<T> {
             }
         }
 
-        final class TakeUntilOtherSubscriber extends AtomicReference<Subscription>
-                implements FlowableSubscriber<Object> {
+        final class TakeUntilOtherSingle extends AtomicReference<Disposable> implements SingleObserver<U> {
 
             @Override
-            public void onSubscribe(Subscription s) {
-                SubscriptionHelper.setOnce(this, s, Long.MAX_VALUE);
+            public void onSubscribe(Disposable d) {
+                DisposableHelper.setOnce(this, d);
             }
 
             @Override
-            public void onNext(Object t) {
-                if (get() != SubscriptionHelper.CANCELLED) {
-                    otherComplete();
-                }
+            public void onSuccess(U u) {
+                otherComplete();
             }
 
             @Override
-            public void onError(Throwable t) {
-                otherError(t);
+            public void onError(Throwable e) {
+                otherError(e);
             }
 
-            @Override
-            public void onComplete() {
-                if (get() != SubscriptionHelper.CANCELLED) {
-                    otherComplete();
-                }
-            }
         }
+
     }
+
 }
 
