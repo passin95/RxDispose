@@ -44,9 +44,4 @@ public class RxDisposeTest {
         RxDispose.bindUntilEvent(null, new Object());
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testBindUntilThrowsOnNullEvent() {
-        BehaviorSubject<Object> lifecycle = BehaviorSubject.create();
-        RxDispose.bindUntilEvent(lifecycle, null);
-    }
 }

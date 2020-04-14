@@ -82,7 +82,7 @@ public class UntilEventTransformerObservableTest {
         stream.onNext("1");
         lifecycle.onNext("keep going");
         stream.onNext("2");
-        lifecycle.onNext("stop");
+        lifecycle.onNext("event");
         stream.onNext("3");
 
         testObserver.assertValues("1", "2");
