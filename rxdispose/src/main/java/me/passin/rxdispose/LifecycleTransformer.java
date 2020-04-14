@@ -14,9 +14,6 @@
 
 package me.passin.rxdispose;
 
-
-import static me.passin.rxdispose.utils.Preconditions.checkNotNull;
-
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
 import io.reactivex.CompletableSource;
@@ -38,22 +35,19 @@ public final class LifecycleTransformer<T> implements ObservableTransformer<T, T
         FlowableTransformer<T, T>, SingleTransformer<T, T>, MaybeTransformer<T, T>,
         CompletableTransformer {
 
-    final Observable<?> observable;
+    private final Observable<?> observable;
 
     LifecycleTransformer(Observable<?> observable) {
-        checkNotNull(observable, "observable == null");
         this.observable = observable;
     }
 
     @Override
     public ObservableSource<T> apply(Observable<T> upstream) {
-        checkNotNull(upstream, "upstream is null");
         return new RxDisposeObservable<>(upstream, observable);
     }
 
     @Override
     public Publisher<T> apply(Flowable<T> upstream) {
-        checkNotNull(upstream, "upstream is null");
         return new RxDisposeFlowable<>(upstream, observable.toFlowable(BackpressureStrategy.LATEST));
     }
 
@@ -64,13 +58,11 @@ public final class LifecycleTransformer<T> implements ObservableTransformer<T, T
 
     @Override
     public MaybeSource<T> apply(Maybe<T> upstream) {
-        checkNotNull(upstream, "upstream is null");
         return new RxDisposeMaybe<>(upstream, observable.firstElement());
     }
 
     @Override
     public CompletableSource apply(Completable upstream) {
-        checkNotNull(upstream, "upstream is null");
         return new RxDisposeCompletable(upstream, observable.firstOrError().ignoreElement());
     }
 
@@ -97,4 +89,5 @@ public final class LifecycleTransformer<T> implements ObservableTransformer<T, T
     public String toString() {
         return "LifecycleTransformer{" + "observable=" + observable + '}';
     }
+
 }

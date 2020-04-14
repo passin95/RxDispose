@@ -16,8 +16,8 @@ import java.util.concurrent.atomic.AtomicReference;
 @SuppressWarnings("unchecked")
 public class RxDisposeMaybe<T, U> extends Maybe<T> {
 
-    final MaybeSource<T> source;
-    final MaybeSource<U> other;
+    private final MaybeSource<T> source;
+    private final MaybeSource<U> other;
 
     RxDisposeMaybe(MaybeSource<T> source, MaybeSource<U> other) {
         this.source = source;
@@ -128,6 +128,9 @@ public class RxDisposeMaybe<T, U> extends Maybe<T> {
             public void onComplete() {
                 otherComplete();
             }
+
         }
+
     }
+
 }

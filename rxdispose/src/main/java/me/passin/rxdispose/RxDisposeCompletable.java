@@ -16,8 +16,8 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class RxDisposeCompletable extends Completable {
 
-    final Completable source;
-    final CompletableSource other;
+    private final Completable source;
+    private final CompletableSource other;
 
     RxDisposeCompletable(Completable source, CompletableSource other) {
         this.source = source;
@@ -119,7 +119,10 @@ public class RxDisposeCompletable extends Completable {
             public void onError(Throwable e) {
                 otherError(e);
             }
+
         }
+
     }
+
 }
 

@@ -21,8 +21,8 @@ import org.reactivestreams.Subscription;
 @SuppressWarnings("unchecked")
 public class RxDisposeFlowable<T, U> extends Flowable<T> {
 
-    final Flowable<T> source;
-    final Publisher<? extends U> other;
+    private final Flowable<T> source;
+    private final Publisher<? extends U> other;
 
     RxDisposeFlowable(Flowable<T> source, Publisher<? extends U> other) {
         this.source = source;
@@ -126,6 +126,9 @@ public class RxDisposeFlowable<T, U> extends Flowable<T> {
             public void onComplete() {
                 otherComplete();
             }
+
         }
+
     }
+
 }

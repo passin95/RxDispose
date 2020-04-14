@@ -18,8 +18,8 @@ import java.util.concurrent.atomic.AtomicReference;
 @SuppressWarnings("unchecked")
 public class RxDisposeObservable<T, U> extends Observable<T> {
 
-    final ObservableSource<T> source;
-    final ObservableSource<? extends U> other;
+    private final ObservableSource<T> source;
+    private final ObservableSource<? extends U> other;
 
     RxDisposeObservable(ObservableSource<T> source, ObservableSource<? extends U> other) {
         this.source = source;
@@ -121,6 +121,9 @@ public class RxDisposeObservable<T, U> extends Observable<T> {
             public void onComplete() {
                 otherComplete();
             }
+
         }
+
     }
+
 }
