@@ -16,4 +16,5 @@ android {
 dependencies {
     implementation rootProject.ext.appCompat
     implementation project(':rxdispose-android')
+//    implementation 'me.passin:rxdispose-android:2.0.0'
 }
