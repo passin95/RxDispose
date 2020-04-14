@@ -14,25 +14,24 @@
 
 package me.passin.rxdispose.android;
 
-import static io.reactivex.android.MainThreadDisposable.verifyMainThread;
-
 import android.view.View;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.MainThreadDisposable;
+import static io.reactivex.android.MainThreadDisposable.verifyMainThread;
 
 final class ViewDetachesOnSubscribe implements ObservableOnSubscribe<Object> {
 
     static final Object SIGNAL = new Object();
 
-    final View view;
+    private final View view;
 
-    public ViewDetachesOnSubscribe(View view) {
+    ViewDetachesOnSubscribe(View view) {
         this.view = view;
     }
 
     @Override
-    public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+    public void subscribe(ObservableEmitter<Object> emitter) {
         verifyMainThread();
         EmitterListener listener = new EmitterListener(emitter);
         emitter.setDisposable(listener);
@@ -43,7 +42,7 @@ final class ViewDetachesOnSubscribe implements ObservableOnSubscribe<Object> {
 
         final ObservableEmitter<Object> emitter;
 
-        public EmitterListener(ObservableEmitter<Object> emitter) {
+        EmitterListener(ObservableEmitter<Object> emitter) {
             this.emitter = emitter;
         }
 
@@ -61,6 +60,7 @@ final class ViewDetachesOnSubscribe implements ObservableOnSubscribe<Object> {
         protected void onDispose() {
             view.removeOnAttachStateChangeListener(this);
         }
+
     }
 
 }

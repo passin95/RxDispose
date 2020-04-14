@@ -13,5 +13,4 @@ public enum ActivityEvent {
     PAUSE,
     STOP,
     DESTROY
-
 }

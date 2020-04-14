@@ -17,5 +17,4 @@ public enum FragmentEvent {
     DESTROY_VIEW,
     DESTROY,
     DETACH
-
 }

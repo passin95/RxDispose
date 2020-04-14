@@ -2,23 +2,23 @@ package me.passin.rxdispose.android;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
+import me.passin.rxdispose.EventProvider;
 
 /**
  * @author: passin
- * @date: 2019/3/27 17:25
+ * @date: 2019/3/27 17:44
  * @desc:
  */
-public class CostomEventProvider implements ICostomEventProvider {
+public class ActivityEventProvider implements EventProvider<ActivityEvent, Object> {
 
     private final BehaviorSubject<Object> mEventSubject = BehaviorSubject.create();
 
     private Object lastLifecycleEvent;
 
-    public static CostomEventProvider create() {
-        return new CostomEventProvider();
+    public static ActivityEventProvider create() {
+        return new ActivityEventProvider();
     }
 
-    @Override
     public synchronized void sendCostomEvent(Object event) {
         mEventSubject.onNext(event);
         if (lastLifecycleEvent != null) {
@@ -27,7 +27,7 @@ public class CostomEventProvider implements ICostomEventProvider {
     }
 
     @Override
-    public synchronized void sendLifecycleEvent(Object event) {
+    public synchronized void sendLifecycleEvent(ActivityEvent event) {
         mEventSubject.onNext(event);
         lastLifecycleEvent = event;
     }
@@ -36,4 +36,5 @@ public class CostomEventProvider implements ICostomEventProvider {
     public Observable<Object> getObservable() {
         return mEventSubject;
     }
+
 }

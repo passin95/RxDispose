@@ -16,9 +16,10 @@ package me.passin.rxdispose.android;
 import android.support.annotation.NonNull;
 import me.passin.rxdispose.Lifecycleable;
 
-public interface ActivityLifecycleable extends Lifecycleable<Object> {
+public interface ActivityLifecycleable extends Lifecycleable<ActivityEvent, Object> {
 
     @Override
     @NonNull
-    ICostomEventProvider provideEventProvider();
+    ActivityEventProvider getEventProvider();
+
 }
